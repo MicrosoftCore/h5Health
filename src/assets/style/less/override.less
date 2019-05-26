@@ -1,0 +1,19 @@
+@import '~vux/src/styles/variable.less';
+
+.weui-tabbar__item {
+  text-decoration: none;
+  .weui-tabbar__icon {
+    line-height: 27px;
+  }
+  .weui-tabbar__label {
+    margin: 0;
+  }
+}
+
+.weui-bar__item_on {
+  .weui-tabbar__icon {
+    .iconfont {
+      color: @tabbar-text-active-color!important;
+    }
+  }
+}
