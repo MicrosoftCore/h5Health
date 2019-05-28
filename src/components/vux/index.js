@@ -1,3 +1,4 @@
 import Checker from './Checker'
+import XInput from './XInput'
 
-export { Checker }
+export { Checker, XInput }
