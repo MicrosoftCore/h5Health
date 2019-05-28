@@ -3,13 +3,16 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-import Axios from '@/plugins/axios'
-Vue.use(Axios)
+import plugins from '@/plugins'
+Vue.use(plugins)
 
 Vue.config.productionTip = false
 
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  mounted () {
+    this.$store.dispatch('question/get')
+  }
 }).$mount('#app')
