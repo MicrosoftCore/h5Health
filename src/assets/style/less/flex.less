@@ -1,20 +1,32 @@
-.flex-ac {
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-align__center {
   display: flex;
   align-items: center;
 }
 
-.flex-jc {
+.flex-justify__center {
   display: flex;
   justify-content: center;
 }
 
-.flex-js {
+.flex-justify__between {
   display: flex;
   justify-content: space-between;
 }
 
-.flex-cc {
+.flex-column {
+  height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+}
+
+.flex-column__stretch {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  flex: 1;
 }
