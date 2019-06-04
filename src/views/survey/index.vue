@@ -74,22 +74,22 @@ export default {
 
     this.setModel(this.survey)
 
-    this.survey.onValueChanged.add((sender, options) => {
+    this.survey.onValueChanged.add(() => {
       this.saveState(this.jsonIndex)
     })
 
-    this.survey.onCurrentPageChanged.add((survey, options) => {
+    this.survey.onCurrentPageChanged.add(survey => {
       this.setVisible({
         jsonIndex: this.jsonIndex,
         title: survey.currentPage.title
       })
     })
 
-    this.survey.onPartialSend.add((survey, options) => {
+    this.survey.onPartialSend.add(() => {
       this.saveServer()
     })
 
-    this.survey.onComplete.add((sender, options) => {
+    this.survey.onComplete.add(() => {
       this.setVisible({
         jsonIndex: this.jsonIndex + 1
       })
@@ -99,9 +99,7 @@ export default {
       this.saveState(this.jsonIndex)
       this.saveServer()
       if (this.jsonIndex == this.questions.length - 1) {
-        this.put({
-          idwechat: 1
-        })
+        this.put()
       }
     })
 
@@ -110,7 +108,7 @@ export default {
       pageIndex: this.pageIndex
     })
 
-    timerId = window.setInterval(_ => {
+    timerId = window.setInterval(() => {
       this.saveServer()
     }, polling)
   },

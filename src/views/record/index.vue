@@ -1,6 +1,6 @@
 <template>
   <div class="record">
-    <timeline>
+    <timeline v-if="records.length">
       <timeline-item v-for="(item, index) in records" :key="index">
         <div class="record-card flex-align__center blue" @click="onClick(item.idqtnaire)">
           <div class="left flex-center">
@@ -15,10 +15,18 @@
         </div>
       </timeline-item>
     </timeline>
+    <div class="record-empty flex-column__stretch flex-center" v-else>
+      <div class="wrapper">
+        <span class="iconfont baogao"></span>
+        <div class="label1">没有任何答题记录</div>
+        <div class="label2">先去填写问卷吧~</div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { Timeline, TimelineItem } from 'vux'
 import service from '@/common/service'
 
@@ -31,6 +39,9 @@ export default {
     return {
       records: []
     }
+  },
+  computed: {
+    ...mapGetters('account', ['userinfo'])
   },
   methods: {
     onClick(idqtnaire) {
@@ -45,7 +56,7 @@ export default {
   async created() {
     this.records = await service['cdcqtnaire.queryRecords']({
       params: {
-        idwechat: 2
+        idwechat: this.userinfo.idwechat
       }
     })
   }
@@ -55,6 +66,8 @@ export default {
 <style lang="less" scoped>
 .record {
   height: 100%;
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -88,6 +101,23 @@ export default {
       .bottom {
         margin-top: 3px;
         font-size: 12px;
+      }
+    }
+  }
+  .record-empty {
+    .wrapper {
+      text-align: center;
+      .iconfont {
+        font-size: 80px;
+        color: #eaeaea;
+      }
+      .label1,
+      .label2 {
+        font-size: 15px;
+        color: #848484;
+      }
+      .label1 {
+        margin-top: 10px;
       }
     }
   }

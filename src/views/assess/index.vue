@@ -1,6 +1,6 @@
 <template>
   <div class="assess">
-    <div class="assess-wrapper" v-if="id">
+    <div class="assess-wrapper" v-if="id && typeof id === 'number'">
       <tab>
         <tab-item selected @on-item-click="onItemClick">近期</tab-item>
         <tab-item @on-item-click="onItemClick">终身</tab-item>

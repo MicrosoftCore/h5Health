@@ -63,6 +63,7 @@ export default {
     UserInfo
   },
   computed: {
+    ...mapGetters('account', ['userinfo']),
     ...mapGetters('question', ['visible']),
     ...mapState('question', {
       questions: state => state.questions
@@ -82,7 +83,7 @@ export default {
     ...mapActions('question', ['get', 'post']),
     onClick(jsonIndex, name) {
       this.post({
-        idwechat: 1,
+        idwechat: this.userinfo.idwechat,
         gender: '男',
         qtnaireversion: this.questions[0].qtnaireversion
       })
