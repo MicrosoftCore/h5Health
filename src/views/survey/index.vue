@@ -1,17 +1,16 @@
 <template>
   <div class="flex-column">
-    <x-header/>
+    <x-header title="填写问卷"/>
     <div class="flex-column__stretch">
-      <survey :survey="survey" v-if="survey"></survey>
+      <survey :survey="survey" v-if="questions.length"></survey>
     </div>
   </div>
 </template>
 
 <script>
-import { XHeader } from '@/components/vux'
+import { XHeader } from 'vux'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { Model, StylesManager, Survey } from 'survey-vue'
-// import * as SurveyVue from 'survey-vue'
 StylesManager.applyTheme('darkblue')
 
 let timerId = 0
@@ -31,11 +30,14 @@ export default {
     ...mapState('question', {
       questions: state => state.questions
     }),
-    idquestionjson() {
-      return this.$route.params.idquestionjson
+    jsonIndex() {
+      return this.$route.params.jsonIndex
+    },
+    pageIndex() {
+      return this.$route.params.name.replace('page', '')
     },
     question() {
-      return this.questions[this.idquestionjson - 1]
+      return this.questions[this.jsonIndex]
     },
     questionjson() {
       try {
@@ -50,19 +52,22 @@ export default {
       'setModel',
       'loadState',
       'saveState',
-      'saveServer',
-      'updateServer'
+      'saveServer'
     ]),
+    ...mapActions('question', ['get', 'put']),
     ...mapMutations('answer', ['setModel']),
+    ...mapMutations('question', ['setVisible']),
     killTimer() {
       console.log('>>>>>>', 'kill the timer')
       clearInterval(timerId)
     }
   },
-  mounted() {
+  async created() {
+    if (!this.questions.length) await this.get()
     this.survey = new Model(
       Object.assign(this.questionjson, {
         clearInvisibleValues: 'none',
+        sendResultOnPageNext: true,
         showProgressBar: 'top'
       })
     )
@@ -70,24 +75,40 @@ export default {
     this.setModel(this.survey)
 
     this.survey.onValueChanged.add((sender, options) => {
-      this.saveState()
+      this.saveState(this.jsonIndex)
     })
 
     this.survey.onCurrentPageChanged.add((survey, options) => {
-      this.saveState()
+      this.setVisible({
+        jsonIndex: this.jsonIndex,
+        title: survey.currentPage.title
+      })
+    })
+
+    this.survey.onPartialSend.add((survey, options) => {
       this.saveServer()
     })
 
     this.survey.onComplete.add((sender, options) => {
+      this.setVisible({
+        jsonIndex: this.jsonIndex + 1
+      })
       //kill the timer
       this.killTimer()
       //save the data on survey complete. You may call another function to store the final results
-      this.saveState()
+      this.saveState(this.jsonIndex)
       this.saveServer()
-      this.updateServer()
+      if (this.jsonIndex == this.questions.length - 1) {
+        this.put({
+          idwechat: 1
+        })
+      }
     })
 
-    this.loadState()
+    this.loadState({
+      jsonIndex: this.jsonIndex,
+      pageIndex: this.pageIndex
+    })
 
     timerId = window.setInterval(_ => {
       this.saveServer()
