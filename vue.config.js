@@ -1,5 +1,8 @@
 module.exports = {
   configureWebpack: config => {
+    config.externals = {
+      echarts: 'echarts'
+    }
     require('vux-loader').merge(config, {
       plugins: [
         'vux-ui',
@@ -11,9 +14,10 @@ module.exports = {
     })
   },
   devServer: {
+    disableHostCheck: true,
     proxy: {
       '/api': {
-        target: 'http://10.71.88.52:8089',
+        target: 'http://10.71.88.194:8089',
         changeOrigin: true
       }
     }

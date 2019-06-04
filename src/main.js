@@ -11,8 +11,5 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
-  render: h => h(App),
-  mounted () {
-    this.$store.dispatch('question/get')
-  }
+  render: h => h(App)
 }).$mount('#app')
