@@ -1,6 +1,9 @@
 import Axios from '@/plugins/axios'
 
 export default {
+  'cdcHttpClient.getAccessToken': payload => Axios.get('/api/cdcHttpClient/getAccessToken', payload), // code 获取 access_token
+  'cdcHttpClient.getUserinfo': payload => Axios.get('/api/cdcHttpClient/getUserinfo', payload), // token openid 换取 用户信息
+  'cdcwechat.add': payload => Axios.post('/api/cdcwechat/add', payload), // 获取 idwechat
   'cdcquestionjson.list': () => Axios.get('/api/cdcquestionjson/list'), // 获取问卷 json
   'cdcqtnaire.update': payload => Axios.post('/api/cdcqtnaire/update', payload), // 答题完成
   'cdcqtnaire.add': payload => Axios.post('/api/cdcqtnaire/add', payload), // 开始答题

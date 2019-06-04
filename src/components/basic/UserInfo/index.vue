@@ -1,15 +1,20 @@
 <template>
   <div class="userInfo flex-align__center">
-    <img class="userInfo__avatar vux-1px" src="./F0E.jpg" alt>
+    <img class="userInfo__avatar vux-1px" :src="userinfo.headimgurl" alt>
     <div class="userInfo__label">
-      <div class="name">欧阳娜娜</div>
-      <div class="phone">手机号: 18124008700</div>
+      <div class="name">{{ userinfo.nickname }}</div>
+      <div class="phone">位置: {{ userinfo.province }}省{{ userinfo.city }}市</div>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+import { mapGetters } from 'vuex'
+export default {
+  computed: {
+    ...mapGetters('account', ['userinfo'])
+  }
+}
 </script>
 
 <style lang="less" scoped>
