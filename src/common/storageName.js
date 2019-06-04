@@ -1,0 +1,5 @@
+export const account__snsapi_userinfo = 'snsapi_userinfo'
+export const account__userinfo = 'userinfo'
+export const answer__surveyjs_loadstate = 'SurveyJS_LoadState'
+export const question__surveyjs_idqtnaire = 'SurveyJS_Idqtnaire'
+export const question__surveyjs_loadvisible = 'SurveyJS_LoadVisible'
