@@ -1,16 +1,16 @@
 <template>
   <div class="record">
     <timeline>
-      <timeline-item v-for="(item, index) in 6" :key="index">
-        <div class="record-card flex-align__center blue">
+      <timeline-item v-for="(item, index) in records" :key="index">
+        <div class="record-card flex-align__center blue" @click="onClick(item.idqtnaire)">
           <div class="left flex-center">
             <span class="iconfont yundong"></span>
           </div>
           <div class="right">
             <div class="top flex-align__center">
-              <span class="span1">在线问诊</span>
+              <span class="span1">问卷版本号 {{ item.qtnaireversion }}</span>
             </div>
-            <div class="bottom">答题时间: 11月27日 09:00-10:00</div>
+            <div class="bottom">答题时间: {{ item.fillingTime }}</div>
           </div>
         </div>
       </timeline-item>
@@ -21,21 +21,33 @@
 <script>
 import { Timeline, TimelineItem } from 'vux'
 import service from '@/common/service'
+
 export default {
   components: {
     Timeline,
     TimelineItem
   },
   data() {
-    return {}
+    return {
+      records: []
+    }
+  },
+  methods: {
+    onClick(idqtnaire) {
+      this.$router.push({
+        name: 'assess',
+        query: {
+          idqtnaire
+        }
+      })
+    }
   },
   async created() {
-    // let result2 = await service['description.queryinfos']({
-    //   params: {
-    //     idqtnaire: this.$route.params.idqtnaire
-    //   }
-    // })
-    // console.log(result2)
+    this.records = await service['cdcqtnaire.queryRecords']({
+      params: {
+        idwechat: 2
+      }
+    })
   }
 }
 </script>
@@ -63,6 +75,7 @@ export default {
     }
     .right {
       flex: 1;
+      letter-spacing: 1px;
       .top {
         .span1 {
           margin-right: 10px;
