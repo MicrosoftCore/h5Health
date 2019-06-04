@@ -1,41 +1,37 @@
 <template>
   <div class="home">
-    <div class="home-header flex-ac">
-      <img class="home-header__avatar vux-1px" src="./F0E.jpg" alt>
-      <div class="home-header__label">
-        <div class="name">诸葛亮</div>
-        <div class="phone">手机号: 18124008700</div>
-      </div>
-    </div>
-    <div
-      class="home-card"
-      :class="{ 'opacity': item.status == -1 }"
-      :key="index"
-      v-for="(item, index) in lists"
-    >
-      <div class="home-card__top vux-1px-b">
-        <div class="title">{{ item.title }}</div>
-        <div>
-          <span class="status">
-            <span class="status1" v-if="item.status == -1">
-              <span class="iconfont wenjuan"></span>
-              <span>未答题</span>
+    <UserInfo/>
+    <div v-for="(json, jsonIndex) in questionsJson" :key="jsonIndex">
+      <div
+        class="home-card"
+        v-if="card.title && visible[jsonIndex] && visible[jsonIndex].includes(card.title[json.locale]) || visible[jsonIndex] && cardIndex == 0 || jsonIndex == 0 && cardIndex == 0"
+        v-for="(card, cardIndex) in json.pages"
+        :key="cardIndex"
+        @click="onClick(jsonIndex, card.name)"
+      >
+        <div class="home-card__top">
+          <div class="title">{{ json.title }} - {{ card.title[json.locale] }}</div>
+          <div>
+            <span class="status">
+              <!-- <span class="status1">
+                <span class="iconfont wenjuan"></span>
+                <span>未答题</span>
+              </span>
+              <span class="status2">
+                <span class="iconfont zhuangtai"></span>
+                <span>进行中</span>
+              </span>-->
+              <span class="status3">
+                <span class="iconfont chenggong"></span>
+                <span>已答完</span>
+              </span>
             </span>
-            <span class="status2" v-if="item.status == 0">
-              <span class="iconfont zhuangtai"></span>
-              <span>进行中</span>
-            </span>
-            <span class="status3" v-if="item.status == 1">
-              <span class="iconfont chenggong"></span>
-              <span>已答完</span>
-            </span>
-          </span>
-          <span class="mark" v-if="item.status == 1">健康度: {{ item.mark }}分</span>
-          <span class="mark" v-else>完成度: {{ item.mark }}%</span>
+            <!-- <span class="mark">健康度: 100分</span> -->
+            <span class="mark">完成度: {{ 100 }}%</span>
+          </div>
         </div>
-      </div>
-      <div class="home-card__bottom">
-        <div class="flex-js">
+        <!-- <div class="home-card__bottom">
+        <div class="flex-justify__between">
           <div>
             <span class="iconfont bianji"></span>
             <span class="label">编辑</span>
@@ -46,91 +42,82 @@
           </div>
           <div>
             <span class="iconfont shuju"></span>
-            <span class="label">数据</span>
+            <span class="label">评估</span>
           </div>
           <div>
             <span class="iconfont gengduo"></span>
             <span class="label">更多</span>
           </div>
         </div>
+        </div>-->
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+import UserInfo from '@/components/basic/UserInfo'
 export default {
-  data() {
-    return {
-      /**
-       * 1 - 已答题
-       * 0 - 进行中
-       * -1 - 未答题
-       */
-      lists: [
-        {
-          title: '基本信息',
-          status: 1,
-          mark: 88
-        },
-        {
-          title: '疾病史、家族史、和用药史',
-          status: 0,
-          mark: 33
-        },
-        {
-          title: '生育史',
-          status: -1,
-          mark: 0
-        }
-      ]
+  components: {
+    UserInfo
+  },
+  computed: {
+    ...mapState('question', {
+      questions: state => state.questions,
+      visible: state => state.visible
+    }),
+    questionsJson() {
+      try {
+        return this.questions.map(item => ({
+          ...JSON.parse(item.jsonstr),
+          title: item.title
+        }))
+      } catch (error) {
+        return []
+      }
     }
   },
-  created() {
-    this.$axios.get('/api/cdcquestionjson/list').then(resp => {
-      console.log(resp)
-      // this.lists = resp
-    })
+  methods: {
+    ...mapActions('question', ['get', 'post', 'getVisible']),
+    onClick(jsonIndex, name) {
+      this.post({
+        idwechat: 1,
+        gender: '男',
+        qtnaireversion: this.questions[0].qtnaireversion
+      })
+      this.$router.push({
+        name: 'survey',
+        params: {
+          jsonIndex,
+          name
+        }
+      })
+    }
+  },
+  async created() {
+    if (!this.questions.length) await this.get()
+    this.getVisible()
   }
 }
 </script>
 
 <style lang="less" scoped>
 .home {
-  .home-header {
-    padding: 15px;
-    margin-bottom: 10px;
-    background-color: #ffffff;
-    .home-header__avatar {
-      width: 70px;
-      height: 70px;
-      margin-right: 20px;
-      border-color: #f8f8ff;
-    }
-    .home-header__label {
-      line-height: 25px;
-      .name {
-        font-size: 18px;
-        font-weight: bold;
-      }
-      .phone {
-        color: #999999;
-      }
-    }
-  }
-
   .home-card {
     margin: 10px;
     margin-bottom: 10px;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
+    border-radius: 3px;
+    // border-top-left-radius: 3px;
+    // border-top-right-radius: 3px;
     background-color: #ffffff;
     .home-card__top {
       padding: 20px;
       border-color: #f0f0f0;
+      font-size: 14px;
       .title {
         margin-bottom: 10px;
-        font-size: 18px;
+        font-size: 16px;
       }
       .status {
         margin-right: 10px;
@@ -151,6 +138,7 @@ export default {
     .home-card__bottom {
       padding: 10px 20px;
       background-color: #fafafa;
+      font-size: 14px;
       .iconfont {
         font-size: 14px;
         color: #35495e;
