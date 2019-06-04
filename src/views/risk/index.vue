@@ -2,29 +2,33 @@
   <div class="risk flex-column">
     <x-header title="评估详情"/>
     <div class="flex-column__stretch">
-      <div class="risk-card flex-align__center orange">
-        <div class="left flex-center">
-          <span class="iconfont jiankang2"></span>
-        </div>
-        <div class="right">
-          <div class="top flex-align__center">
-            <span class="span2">昨天</span>
-            <span class="span1">1726</span>
-            <span class="span2">步</span>
+      <div v-for="(item, index) in risks" :key="index">
+        <div class="risk-card flex-align__center orange" v-if="item.hazard === 1">
+          <div class="left flex-center">
+            <span class="iconfont jiankang2"></span>
           </div>
-          <div class="bottom">您预约了11月27日 09:00-10:00 的挂号服务</div>
-        </div>
-      </div>
-      <div class="risk-card flex-align__center green">
-        <div class="left flex-center">
-          <span class="iconfont jiankang1"></span>
-        </div>
-        <div class="right">
-          <div class="top flex-align__center">
-            <span class="span1">09:00</span>
-            <span class="span2">就诊提醒</span>
+          <div class="right">
+            <div class="top flex-align__center">
+              <!-- <span class="span2">昨天</span>
+              <span class="span1">1726</span>
+              <span class="span2">步</span>-->
+              <span>{{ item.factorname }}</span>
+            </div>
+            <div class="bottom">{{ item.description }}</div>
           </div>
-          <div class="bottom">您预约了11月27日 09:00-10:00 的挂号服务</div>
+        </div>
+        <div class="risk-card flex-align__center green" v-if="item.hazard === 0">
+          <div class="left flex-center">
+            <span class="iconfont jiankang1"></span>
+          </div>
+          <div class="right">
+            <div class="top flex-align__center">
+              <!-- <span class="span1">09:00</span>
+              <span class="span2">就诊提醒</span>-->
+              <span>{{ item.factorname }}</span>
+            </div>
+            <div class="bottom">{{ item.description }}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -39,15 +43,16 @@ export default {
     XHeader
   },
   data() {
-    return {}
+    return {
+      risks: []
+    }
   },
   async created() {
-    // let result2 = await service['description.queryinfos']({
-    //   params: {
-    //     idqtnaire: this.$route.params.idqtnaire
-    //   }
-    // })
-    // console.log(result2)
+    this.risks = await service['description.queryinfos']({
+      params: {
+        idqtnaire: this.$route.params.idqtnaire
+      }
+    })
   }
 }
 </script>
