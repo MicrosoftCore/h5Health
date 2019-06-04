@@ -1,4 +1,5 @@
 import service from '@/common/service'
+import { question__surveyjs_idqtnaire, question__surveyjs_loadvisible } from '@/common/storageName'
 
 export default {
   namespaced: true,
@@ -7,10 +8,10 @@ export default {
   },
   getters: {
     idqtnaire () {
-      return window.localStorage.getItem('SurveyJS_Idqtnaire')
+      return window.localStorage.getItem(question__surveyjs_idqtnaire)
     },
     visible () {
-      let storageVisible = window.localStorage.getItem('SurveyJS_LoadVisible') || ''
+      let storageVisible = window.localStorage.getItem(question__surveyjs_loadvisible) || ''
       if (storageVisible) return JSON.parse(storageVisible)
     }
   },
@@ -19,13 +20,14 @@ export default {
       state.questions = payload
     },
     setVisible (state, { jsonIndex, title }) {
-      let jsonGroup = state.visible[jsonIndex]
+      let visible = this.getters['question/visible']
+      let jsonGroup = visible[jsonIndex]
       if (jsonGroup && title && !jsonGroup.includes(title)) {
-        state.visible[jsonIndex].push(title)
+        visible[jsonIndex].push(title)
       } else {
-        state.visible[jsonIndex] = [ title && title ]
+        visible[jsonIndex] = [ title && title ]
       }
-      window.localStorage.setItem('SurveyJS_LoadVisible', JSON.stringify(state.visible))
+      window.localStorage.setItem(question__surveyjs_loadvisible, JSON.stringify(visible))
     }
   },
   actions: {
@@ -35,11 +37,13 @@ export default {
     async post ({ commit }, payload) {
       try {
         let result = await service['cdcqtnaire.add'](payload)
-        window.localStorage.setItem('SurveyJS_Idqtnaire', result.msg)
+        window.localStorage.setItem(question__surveyjs_idqtnaire, result.msg)
       } catch (error) {}
     },
-    async put ({ commit }, payload) {
-      await service['cdcqtnaire.update'](payload)
+    async put ({ rootGetters }) {
+      await service['cdcqtnaire.update']({
+        idwechat: rootGetters['account/userinfo'].idwechat
+      })
     }
   }
 }
