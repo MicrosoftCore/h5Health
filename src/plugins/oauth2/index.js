@@ -1,14 +1,6 @@
-/**
- * ------------------------------------------------------------------
- * 微信授权主入口文件
- * @author SongJinDa <310676645@qq.com>
- * @date 2017/3/26
- * ------------------------------------------------------------------
- */
-
-import WeChatAuth from './wechat-auth'
 import url from 'url'
 import querystring from 'querystring'
+import WeChatAuth from './wechat-auth'
 
 export default {
   install (Vue, options) {
