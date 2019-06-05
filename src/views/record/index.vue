@@ -1,25 +1,28 @@
 <template>
-  <div class="record">
-    <timeline v-if="records.length">
-      <timeline-item v-for="(item, index) in records" :key="index">
-        <div class="record-card flex-align__center blue" @click="onClick(item.idqtnaire)">
-          <div class="left flex-center">
-            <span class="iconfont yundong"></span>
-          </div>
-          <div class="right">
-            <div class="top flex-align__center">
-              <span class="span1">问卷版本号 {{ item.qtnaireversion }}</span>
+  <div class="flex-column">
+    <x-header :title="$route.meta.title"/>
+    <div class="record flex-column__stretch">
+      <timeline v-if="records.length">
+        <timeline-item v-for="(item, index) in records" :key="index">
+          <div class="record-card flex-align__center blue" @click="onClick(item.idqtnaire)">
+            <div class="left flex-center">
+              <span class="iconfont yundong"></span>
             </div>
-            <div class="bottom">答题时间: {{ item.fillingTime }}</div>
+            <div class="right">
+              <div class="top flex-align__center">
+                <span class="span1">问卷版本号 {{ item.qtnaireversion }}</span>
+              </div>
+              <div class="bottom">答题时间: {{ item.fillingTime }}</div>
+            </div>
           </div>
+        </timeline-item>
+      </timeline>
+      <div class="record-empty flex-center" v-if="!records.length && requested">
+        <div class="wrapper">
+          <span class="iconfont baogao"></span>
+          <div class="label1">没有任何答题记录</div>
+          <div class="label2">先去填写问卷吧~</div>
         </div>
-      </timeline-item>
-    </timeline>
-    <div class="record-empty flex-column__stretch flex-center" v-else>
-      <div class="wrapper">
-        <span class="iconfont baogao"></span>
-        <div class="label1">没有任何答题记录</div>
-        <div class="label2">先去填写问卷吧~</div>
       </div>
     </div>
   </div>
@@ -27,17 +30,19 @@
 
 <script>
 import { mapState } from 'vuex'
-import { Timeline, TimelineItem } from 'vux'
+import { Timeline, TimelineItem, XHeader } from 'vux'
 import service from '@/common/service'
 
 export default {
   components: {
     Timeline,
-    TimelineItem
+    TimelineItem,
+    XHeader
   },
   data() {
     return {
-      records: []
+      records: [],
+      requested: false
     }
   },
   computed: {
@@ -61,18 +66,13 @@ export default {
         idwechat: this.userinfo.idwechat
       }
     })
+    this.requested = true
   }
 }
 </script>
 
 <style lang="less" scoped>
 .record {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  overflow-x: hidden;
-  overflow-y: scroll;
   background-color: #ffffff;
   .record-card {
     display: flex;
@@ -107,6 +107,7 @@ export default {
     }
   }
   .record-empty {
+    height: 100%;
     .wrapper {
       text-align: center;
       .iconfont {

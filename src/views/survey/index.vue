@@ -1,6 +1,6 @@
 <template>
   <div class="flex-column">
-    <x-header title="填写问卷"/>
+    <x-header :title="survey.currentPage.title"/>
     <div class="flex-column__stretch">
       <survey :survey="survey" v-if="questions.length"></survey>
     </div>
@@ -10,7 +10,7 @@
 <script>
 import { XHeader } from 'vux'
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { Model, StylesManager, Survey } from 'survey-vue'
+import { Model, StylesManager, Survey } from 'survey'
 StylesManager.applyTheme('darkblue')
 
 let timerId = 0
@@ -48,11 +48,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('answer', [
-      'get_state',
-      'set_state',
-      'saveServer'
-    ]),
+    ...mapActions('answer', ['get_state', 'set_state', 'save_server']),
     ...mapActions('question', ['get', 'put']),
     ...mapMutations('answer', ['set_model']),
     ...mapMutations('question', ['set_visible']),
@@ -85,18 +81,18 @@ export default {
     })
 
     this.survey.onPartialSend.add(() => {
-      this.saveServer()
+      this.save_server()
     })
 
     this.survey.onComplete.add(() => {
       this.set_visible({
         jsonIndex: this.jsonIndex + 1
       })
-      //kill the timer
+
       this.killTimer()
-      //save the data on survey complete. You may call another function to store the final results
+
       this.set_state(this.jsonIndex)
-      this.saveServer()
+      this.save_server()
       if (this.jsonIndex == this.questions.length - 1) {
         this.put()
       }
@@ -108,7 +104,7 @@ export default {
     })
 
     timerId = window.setInterval(() => {
-      this.saveServer()
+      this.save_server()
     }, polling)
   },
   beforeDestroy() {
@@ -118,7 +114,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '~survey-vue/survey.min.css';
+@import 'https://cdn.bootcss.com/survey-vue/1.0.87/survey.min.css';
 .flex-column {
   background-color: #ffffff;
 }

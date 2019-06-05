@@ -260,7 +260,7 @@ export default {
             type: 'scatter',
             symbolSize: 20,
             itemStyle: {
-              color: '#39BF68'
+              color: this.riskColor
             },
             data: [
               {
@@ -329,31 +329,32 @@ export default {
     if (fyrsRisk < fyrsLowrisk) {
       this.fyrsRiskColor = '#39BF68'
       this.fyrsRiskTips = '低危'
-    }
-
-    if (fyrsRisk > fyrsLowrisk && fyrsRisk < fyrsHighrisk) {
+    } else if (fyrsRisk > fyrsLowrisk && fyrsRisk < fyrsHighrisk) {
       this.fyrsRiskColor = '#FFBE00'
       this.fyrsRiskTips = '中危'
-    }
-
-    if (fyrsRisk > fyrsHighrisk) {
+    } else if (fyrsRisk > fyrsHighrisk) {
       this.fyrsRiskColor = '#F43530'
       this.fyrsRiskTips = '高危'
+    } else {
+      this.fyrsRiskColor = '#39BF68'
+      this.fyrsRiskTips = '未知'
     }
 
     if (lifetimeRisk < lifetimeLowrisk) {
       this.lifetimeRiskColor = '#39BF68'
       this.lifetimeRiskTips = '低危'
-    }
-
-    if (lifetimeRisk > lifetimeLowrisk && lifetimeRisk < lifetimeHighrisk) {
+    } else if (
+      lifetimeRisk > lifetimeLowrisk &&
+      lifetimeRisk < lifetimeHighrisk
+    ) {
       this.lifetimeRiskColor = '#FFBE00'
       this.lifetimeRiskTips = '中危'
-    }
-
-    if (lifetimeRisk > lifetimeHighrisk) {
+    } else if (lifetimeRisk > lifetimeHighrisk) {
       this.lifetimeRiskColor = '#F43530'
       this.lifetimeRiskTips = '高危'
+    } else {
+      this.lifetimeRiskColor = '#39BF68'
+      this.lifetimeRiskTips = '未知'
     }
 
     this.id && this.onSetOption()
