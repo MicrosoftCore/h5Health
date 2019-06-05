@@ -1,6 +1,6 @@
 import service from '@/common/service'
-import { answer__surveyjs_loadstate } from '@/common/storageName'
-import { Model } from 'survey-vue'
+import { answer__surveyjs_loadstate } from '@/common/storage'
+import { Model } from 'survey'
 
 export default {
   namespaced: true,
@@ -30,7 +30,7 @@ export default {
       }
       window.localStorage.setItem(answer__surveyjs_loadstate, JSON.stringify(model))
     },
-    async saveServer ({ state, rootState }) {
+    async save_server ({ state, rootState }) {
       await service['cdcanswer.add']({
         idqtnaire: rootState.question.idqtnaire,
         jsonobj: JSON.stringify(state.model.data)

@@ -1,5 +1,5 @@
 import service from '@/common/service'
-import { question__surveyjs_idqtnaire, question__surveyjs_loadvisible } from '@/common/storageName'
+import { question__surveyjs_idqtnaire, question__surveyjs_loadvisible } from '@/common/storage'
 
 export default {
   namespaced: true,

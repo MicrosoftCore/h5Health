@@ -1,5 +1,5 @@
 import service from '@/common/service'
-import { account__snsapi_userinfo, account__userinfo } from '@/common/storageName'
+import { account__snsapi_userinfo, account__userinfo } from '@/common/storage'
 
 export default {
   namespaced: true,

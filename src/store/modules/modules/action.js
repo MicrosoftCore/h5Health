@@ -1,10 +1,10 @@
-import * as storageName from '@/common/storageName'
+import * as storage from '@/common/storage'
 
 export default {
   namespaced: true,
   actions: {
     reset ({ commit }) {
-      Object.entries(storageName).forEach(([ key, value ]) => {
+      Object.entries(storage).forEach(([ key, value ]) => {
         const ignore = [ 'account__snsapi_userinfo', 'account__userinfo' ]
         !ignore.includes(key) && window.localStorage.removeItem(value)
       })
