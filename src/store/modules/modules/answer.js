@@ -8,37 +8,31 @@ export default {
     model: new Model()
   },
   mutations: {
-    setModel (state, payload) {
+    set_model (state, payload) {
       state.model = payload
     }
   },
   actions: {
-    loadState ({ state }, { jsonIndex, pageIndex }) {
-      // Here should be the code to load the data from your database
-      let storageState = window.localStorage.getItem(answer__surveyjs_loadstate + jsonIndex) || ''
+    get_state ({ state }, { jsonIndex, pageIndex }) {
+      let item = window.localStorage.getItem(answer__surveyjs_loadstate) || ''
+      let model = (item && JSON.parse(item)[jsonIndex]) || {}
 
-      let result = {}
-      if (storageState) result = JSON.parse(storageState)
-      // else
-      // Create the survey state for the demo. This line should be deleted in the real app.
-
-      // Set the loaded data into the survey.
       state.model.currentPageNo = pageIndex - 1
-      if (result.data) state.model.data = result.data
+      if (model.data) state.model.data = model.data
     },
-    saveState ({ state }, jsonIndex) {
-      // Here should be the code to save the data into your database
-      window.localStorage.setItem(
-        answer__surveyjs_loadstate + jsonIndex,
-        JSON.stringify({
-          currentPageNo: state.model.currentPageNo,
-          data: state.model.data
-        })
-      )
+    set_state ({ state }, jsonIndex) {
+      let item = window.localStorage.getItem(answer__surveyjs_loadstate) || ''
+      let model = (item && JSON.parse(item)) || {}
+
+      model[jsonIndex] = {
+        currentPageNo: state.model.currentPageNo,
+        data: state.model.data
+      }
+      window.localStorage.setItem(answer__surveyjs_loadstate, JSON.stringify(model))
     },
-    async saveServer ({ state, rootGetters }) {
+    async saveServer ({ state, rootState }) {
       await service['cdcanswer.add']({
-        idwechat: rootGetters['account/userinfo'].idwechat,
+        idqtnaire: rootState.question.idqtnaire,
         jsonobj: JSON.stringify(state.model.data)
       })
     }

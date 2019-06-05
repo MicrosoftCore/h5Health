@@ -8,7 +8,7 @@ export default {
         const ignore = [ 'account__snsapi_userinfo', 'account__userinfo' ]
         !ignore.includes(key) && window.localStorage.removeItem(value)
       })
-      commit('question/loadVisible', null, {
+      commit('question/get_visible', null, {
         root: true
       })
     }

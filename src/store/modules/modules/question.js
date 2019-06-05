@@ -4,30 +4,33 @@ import { question__surveyjs_idqtnaire, question__surveyjs_loadvisible } from '@/
 export default {
   namespaced: true,
   state: {
-    questions: []
-  },
-  getters: {
-    idqtnaire () {
-      return window.localStorage.getItem(question__surveyjs_idqtnaire)
-    },
-    visible () {
-      let storageVisible = window.localStorage.getItem(question__surveyjs_loadvisible) || ''
-      if (storageVisible) return JSON.parse(storageVisible)
-    }
+    idqtnaire: null,
+    questions: [],
+    visible: {}
   },
   mutations: {
     set (state, payload) {
       state.questions = payload
     },
-    setVisible (state, { jsonIndex, title }) {
-      let visible = this.getters['question/visible']
-      let jsonGroup = visible[jsonIndex]
+    set_idqtnaire (state, payload) {
+      state.idqtnaire = payload
+      window.localStorage.setItem(question__surveyjs_idqtnaire, payload)
+    },
+    get_idqtnaire (state) {
+      state.idqtnaire = window.localStorage.getItem(question__surveyjs_idqtnaire)
+    },
+    set_visible (state, { jsonIndex, title }) {
+      let jsonGroup = state.visible[jsonIndex]
       if (jsonGroup && title && !jsonGroup.includes(title)) {
-        visible[jsonIndex].push(title)
+        state.visible[jsonIndex].push(title)
       } else {
-        visible[jsonIndex] = [ title && title ]
+        !jsonGroup && (state.visible[jsonIndex] = [ title && title ])
       }
-      window.localStorage.setItem(question__surveyjs_loadvisible, JSON.stringify(visible))
+      window.localStorage.setItem(question__surveyjs_loadvisible, JSON.stringify(state.visible))
+    },
+    get_visible (state) {
+      let visible = window.localStorage.getItem(question__surveyjs_loadvisible) || ''
+      state.visible = visible ? JSON.parse(visible) : {}
     }
   },
   actions: {
@@ -35,15 +38,17 @@ export default {
       commit('set', await service['cdcquestionjson.list']())
     },
     async post ({ commit }, payload) {
-      try {
-        let result = await service['cdcqtnaire.add'](payload)
-        window.localStorage.setItem(question__surveyjs_idqtnaire, result.msg)
-      } catch (error) {}
+      let { msg } = await service['cdcqtnaire.add'](payload)
+      commit('set_idqtnaire', msg)
     },
-    async put ({ rootGetters }) {
+    async put ({ rootState }) {
       await service['cdcqtnaire.update']({
-        idwechat: rootGetters['account/userinfo'].idwechat
+        idqtnaire: rootState.question.idqtnaire
       })
+    },
+    load ({ commit }) {
+      commit('get_idqtnaire')
+      commit('get_visible')
     }
   }
 }
