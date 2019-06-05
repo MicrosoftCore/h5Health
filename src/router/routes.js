@@ -3,15 +3,16 @@
 export default [
   {
     path: '/',
-    name: 'fullLayout',
-    component: () => import('@/views/fullLayout'),
+    name: 'basic',
+    component: () => import('@/views/basic'),
     redirect: 'home',
     children: [
       {
         path: '/home',
         name: 'home',
         meta: {
-          title: '我的问卷'
+          title: '我的问卷',
+          auth: true
         },
         component: () => import('@/views/home')
       },
@@ -19,7 +20,8 @@ export default [
         path: '/assess',
         name: 'assess',
         meta: {
-          title: '我的评估'
+          title: '我的评估',
+          auth: true
         },
         component: () => import('@/views/assess')
       },
@@ -27,23 +29,17 @@ export default [
         path: '/profile',
         name: 'profile',
         meta: {
-          title: '我'
+          title: '我',
+          auth: true
         },
         component: () => import('@/views/profile')
-      },
-      {
-        path: '/record/',
-        name: 'record',
-        meta: {
-          title: '答题记录'
-        },
-        component: () => import('@/views/record')
       },
       {
         path: '/about',
         name: 'about',
         meta: {
-          title: '关于我们'
+          title: '关于我们',
+          auth: true
         },
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
@@ -53,16 +49,30 @@ export default [
     ]
   },
   {
-    path: '/survey/:jsonIndex/:name',
-    name: 'survey',
-    component: () => import('@/views/survey')
+    path: '/record/',
+    name: 'record',
+    meta: {
+      title: '答题记录',
+      auth: true
+    },
+    component: () => import('@/views/record')
   },
   {
     path: '/risk/:idqtnaire',
     name: 'risk',
     meta: {
-      title: '评估详情'
+      title: '评估详情',
+      auth: true
     },
     component: () => import('@/views/risk')
+  },
+  {
+    path: '/survey/:jsonIndex/:name',
+    name: 'survey',
+    meta: {
+      title: '填写问卷',
+      auth: true
+    },
+    component: () => import('@/views/survey')
   }
 ]
