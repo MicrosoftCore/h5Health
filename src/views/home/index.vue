@@ -56,17 +56,19 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import UserInfo from '@/components/basic/UserInfo'
 export default {
   components: {
     UserInfo
   },
   computed: {
-    ...mapGetters('account', ['userinfo']),
-    ...mapGetters('question', ['visible']),
+    ...mapState('account', {
+      userinfo: state => state.userinfo
+    }),
     ...mapState('question', {
-      questions: state => state.questions
+      questions: state => state.questions,
+      visible: state => state.visible
     }),
     questionsJson() {
       try {

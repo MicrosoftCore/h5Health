@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import { Timeline, TimelineItem } from 'vux'
 import service from '@/common/service'
 
@@ -41,7 +41,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('account', ['userinfo'])
+    ...mapState('account', {
+      userinfo: state => state.userinfo
+    })
   },
   methods: {
     onClick(idqtnaire) {

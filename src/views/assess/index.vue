@@ -1,6 +1,6 @@
 <template>
   <div class="assess">
-    <div class="assess-wrapper" v-if="id && typeof id === 'number'">
+    <div class="assess-wrapper" v-if="id">
       <tab>
         <tab-item selected @on-item-click="onItemClick">近期</tab-item>
         <tab-item @on-item-click="onItemClick">终身</tab-item>
@@ -50,7 +50,7 @@
 <script>
 import service from '@/common/service'
 import { XButton, Tab, TabItem, Group, GroupTitle, CellBox } from 'vux'
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -73,7 +73,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('question', ['idqtnaire']),
+    ...mapState('question', ['idqtnaire']),
     id() {
       let { idqtnaire = '' } = this.$route.query
       return idqtnaire || this.idqtnaire
@@ -112,7 +112,7 @@ export default {
   },
   methods: {
     onSetOption() {
-      let instance = echarts.init(this.$refs.instance)
+      let instance = window.echarts.init(this.$refs.instance)
 
       instance.setOption({
         backgroundColor: '#fff',
@@ -356,7 +356,7 @@ export default {
       this.lifetimeRiskTips = '高危'
     }
 
-    this.onSetOption()
+    this.id && this.onSetOption()
   }
 }
 </script>

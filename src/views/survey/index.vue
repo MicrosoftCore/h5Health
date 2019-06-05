@@ -49,14 +49,13 @@ export default {
   },
   methods: {
     ...mapActions('answer', [
-      'setModel',
-      'loadState',
-      'saveState',
+      'get_state',
+      'set_state',
       'saveServer'
     ]),
     ...mapActions('question', ['get', 'put']),
-    ...mapMutations('answer', ['setModel']),
-    ...mapMutations('question', ['setVisible']),
+    ...mapMutations('answer', ['set_model']),
+    ...mapMutations('question', ['set_visible']),
     killTimer() {
       console.log('>>>>>>', 'kill the timer')
       clearInterval(timerId)
@@ -72,14 +71,14 @@ export default {
       })
     )
 
-    this.setModel(this.survey)
+    this.set_model(this.survey)
 
     this.survey.onValueChanged.add(() => {
-      this.saveState(this.jsonIndex)
+      this.set_state(this.jsonIndex)
     })
 
     this.survey.onCurrentPageChanged.add(survey => {
-      this.setVisible({
+      this.set_visible({
         jsonIndex: this.jsonIndex,
         title: survey.currentPage.title
       })
@@ -90,20 +89,20 @@ export default {
     })
 
     this.survey.onComplete.add(() => {
-      this.setVisible({
+      this.set_visible({
         jsonIndex: this.jsonIndex + 1
       })
       //kill the timer
       this.killTimer()
       //save the data on survey complete. You may call another function to store the final results
-      this.saveState(this.jsonIndex)
+      this.set_state(this.jsonIndex)
       this.saveServer()
       if (this.jsonIndex == this.questions.length - 1) {
         this.put()
       }
     })
 
-    this.loadState({
+    this.get_state({
       jsonIndex: this.jsonIndex,
       pageIndex: this.pageIndex
     })
