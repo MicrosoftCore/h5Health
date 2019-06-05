@@ -1,6 +1,6 @@
 <template>
   <div class="flex-column">
-    <x-header v-bind="options"/>
+    <x-header v-bind="headerOptions" @on-click-more="showAction = true"/>
     <div class="flex-column__stretch">
       <router-view/>
     </div>
@@ -21,19 +21,57 @@
         <span slot="label">我</span>
       </tabbar-item>
     </tabbar>
+    <confirm v-model="showConfirm" title="提示" @on-confirm="reset">
+      <p style="text-align: center;">确认重新填写吗?</p>
+    </confirm>
+    <div v-transfer-dom>
+      <actionsheet
+        v-model="showAction"
+        v-bind="sheetOptions"
+        @on-click-menu-reset="showConfirm = true"
+      ></actionsheet>
+    </div>
   </div>
 </template>
 
 <script>
-import { XHeader, Tabbar, TabbarItem } from 'vux'
+import {
+  Actionsheet,
+  Confirm,
+  Tabbar,
+  TabbarItem,
+  TransferDom,
+  XHeader
+} from 'vux'
+import { mapActions } from 'vuex'
 export default {
+  directives: {
+    TransferDom
+  },
   components: {
-    XHeader,
+    Actionsheet,
+    Confirm,
     Tabbar,
-    TabbarItem
+    TabbarItem,
+    XHeader
+  },
+  data() {
+    return {
+      sheetOptions: {
+        showCancel: true,
+        menus: [
+          {
+            label: '重新填写',
+            value: 'reset'
+          }
+        ]
+      },
+      showAction: false,
+      showConfirm: false
+    }
   },
   computed: {
-    options() {
+    headerOptions() {
       return {
         title: this.$route.meta.title,
         rightOptions: {
@@ -41,6 +79,9 @@ export default {
         }
       }
     }
+  },
+  methods: {
+    ...mapActions('action', ['reset'])
   }
 }
 </script>
