@@ -76,7 +76,7 @@ export default {
 
     this.set_model(this.survey)
 
-    this.survey.onValueChanged.add((survey, options) => {
+    this.survey.onValueChanged.add((sender, options) => {
       let name = options.question.page.name
       this.set_state(this.jsonIndex)
       this.set_progress({
@@ -85,10 +85,10 @@ export default {
       })
     })
 
-    this.survey.onCurrentPageChanged.add(survey => {
+    this.survey.onCurrentPageChanged.add(sender => {
       this.set_visible({
         jsonIndex: this.jsonIndex,
-        title: survey.currentPage.title
+        title: sender.currentPage.title
       })
     })
 
@@ -108,6 +108,15 @@ export default {
       if (this.jsonIndex == this.questions.length - 1) {
         this.put()
       }
+    })
+
+    this.survey.onPageVisibleChanged.add((sender, options) => {
+      this.set_visible({
+        jsonIndex: this.jsonIndex,
+        title: options.page.title,
+        type: 'onPageVisibleChanged',
+        visible: options.visible
+      })
     })
 
     this.get_state({

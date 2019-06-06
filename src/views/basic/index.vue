@@ -5,12 +5,12 @@
       <router-view/>
     </div>
     <tabbar>
-      <tabbar-item badge="4" link="/home" :selected="$route.path == '/home'">
+      <tabbar-item link="/home" :selected="$route.path == '/home'">
         <span slot="icon" class="iconfont tabbar-wenjuan"></span>
         <span slot="icon-active" class="iconfont tabbar-wenjuan"></span>
         <span slot="label">问卷</span>
       </tabbar-item>
-      <tabbar-item show-dot link="/assess" :selected="$route.path == '/assess'">
+      <tabbar-item :show-dot="viewreport" link="/assess" :selected="$route.path == '/assess'">
         <span slot="icon" class="iconfont tabbar-pinggu"></span>
         <span slot="icon-active" class="iconfont tabbar-pinggu"></span>
         <span slot="label">评估</span>
@@ -43,7 +43,7 @@ import {
   TransferDom,
   XHeader
 } from 'vux'
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 export default {
   directives: {
     TransferDom
@@ -71,6 +71,7 @@ export default {
     }
   },
   computed: {
+    ...mapState('question', ['viewreport']),
     headerOptions() {
       return {
         title: this.$route.meta.title,

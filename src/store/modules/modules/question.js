@@ -1,5 +1,5 @@
 import service from '@/common/service'
-import { answer__view_report, question__surveyjs_idqtnaire, question__surveyjs_loadvisible } from '@/common/storage'
+import { question__view_report, question__surveyjs_idqtnaire, question__surveyjs_loadvisible } from '@/common/storage'
 
 export default {
   namespaced: true,
@@ -15,10 +15,10 @@ export default {
     },
     set_assess (state) {
       state.viewreport = true
-      window.localStorage.setItem(answer__view_report, true)
+      window.localStorage.setItem(question__view_report, true)
     },
     get_assess (state) {
-      state.viewreport = window.localStorage.getItem(answer__view_report) || false
+      state.viewreport = window.localStorage.getItem(question__view_report) || false
     },
     set_idqtnaire (state, payload) {
       state.idqtnaire = payload
@@ -27,12 +27,20 @@ export default {
     get_idqtnaire (state) {
       state.idqtnaire = window.localStorage.getItem(question__surveyjs_idqtnaire)
     },
-    set_visible (state, { jsonIndex, title }) {
+    set_visible (state, { jsonIndex, title, type = '', visible = true }) {
       let jsonGroup = state.visible[jsonIndex]
       if (jsonGroup && title && !jsonGroup.includes(title)) {
         state.visible[jsonIndex].push(title)
       } else {
         !jsonGroup && (state.visible[jsonIndex] = [ title && title ])
+      }
+      if (type === 'onPageVisibleChanged') {
+        if (visible) {
+          title && state.visible[jsonIndex].push(title)
+        } else {
+          var lists = state.visible[jsonIndex]
+          state.visible[jsonIndex] = lists.filter(item => item && item !== title)
+        }
       }
       window.localStorage.setItem(question__surveyjs_loadvisible, JSON.stringify(state.visible))
     },

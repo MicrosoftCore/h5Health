@@ -1,7 +1,7 @@
 export const account__snsapi_userinfo = 'snsapi_userinfo'
 export const account__userinfo = 'userinfo'
 export const answer__progress = 'answer_progress'
-export const answer__view_report = 'view_report'
 export const answer__surveyjs_loadstate = 'SurveyJS_LoadState'
 export const question__surveyjs_idqtnaire = 'SurveyJS_Idqtnaire'
 export const question__surveyjs_loadvisible = 'SurveyJS_LoadVisible'
+export const question__view_report = 'view_report'
