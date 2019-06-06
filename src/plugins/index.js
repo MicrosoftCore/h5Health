@@ -8,6 +8,7 @@ export default {
   install (Vue) {
     Vue.prototype.$axios = axios
 
+    store.dispatch('answer/load')
     store.dispatch('question/load')
 
     if (process.env.NODE_ENV === 'production') {
@@ -34,7 +35,7 @@ export default {
     } else {
       store.dispatch('account/load', {
         params: {
-          code: '021DMRmi2M9N7C01Hpmi2BRImi2DMRmh'
+          code: '021VFuHa2itP5M0t3SKa2xjIHa2VFuHq'
         }
       })
     }

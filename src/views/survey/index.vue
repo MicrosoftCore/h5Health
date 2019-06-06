@@ -1,6 +1,6 @@
 <template>
   <div class="flex-column">
-    <x-header :title="survey.currentPage.title"/>
+    <x-header :title="title"/>
     <div class="flex-column__stretch">
       <survey :survey="survey" v-if="questions.length"></survey>
     </div>
@@ -45,12 +45,19 @@ export default {
       } catch (error) {
         return new Model()
       }
+    },
+    title() {
+      try {
+        return this.survey.currentPage.title
+      } catch (error) {
+        return ''
+      }
     }
   },
   methods: {
     ...mapActions('answer', ['get_state', 'set_state', 'save_server']),
     ...mapActions('question', ['get', 'put']),
-    ...mapMutations('answer', ['set_model']),
+    ...mapMutations('answer', ['set_model', 'set_progress']),
     ...mapMutations('question', ['set_visible']),
     killTimer() {
       console.log('>>>>>>', 'kill the timer')
@@ -69,8 +76,13 @@ export default {
 
     this.set_model(this.survey)
 
-    this.survey.onValueChanged.add(() => {
+    this.survey.onValueChanged.add((survey, options) => {
+      let name = options.question.page.name
       this.set_state(this.jsonIndex)
+      this.set_progress({
+        jsonIndex: this.jsonIndex,
+        name
+      })
     })
 
     this.survey.onCurrentPageChanged.add(survey => {

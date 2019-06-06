@@ -12,21 +12,27 @@
             <div class="title">{{ json.title }} - {{ card.title[json.locale] }}</div>
             <div>
               <span class="status">
-                <!-- <span class="status1">
+                <span class="status1" v-if="onProgress(card, jsonIndex) === 0">
                   <span class="iconfont wenjuan"></span>
                   <span>未答题</span>
                 </span>
-                <span class="status2">
+                <span
+                  class="status2"
+                  v-if="onProgress(card, jsonIndex) > 0 && onProgress(card, jsonIndex) < 100"
+                >
                   <span class="iconfont zhuangtai"></span>
                   <span>进行中</span>
-                </span>-->
-                <span class="status3">
+                </span>
+                <span class="status3" v-if="onProgress(card, jsonIndex) === 100">
                   <span class="iconfont chenggong"></span>
                   <span>已答完</span>
                 </span>
               </span>
               <!-- <span class="mark">健康度: 100分</span> -->
-              <!-- <span class="mark">完成度: {{ 100 }}%</span> -->
+              <span
+                class="mark"
+                v-if="onProgress(card, jsonIndex) !== 100"
+              >完成度: {{ onProgress(card, jsonIndex) }}%</span>
             </div>
           </div>
           <!-- <div class="home-card__bottom">
@@ -58,6 +64,7 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import UserInfo from '@/components/basic/UserInfo'
+
 export default {
   components: {
     UserInfo
@@ -65,6 +72,9 @@ export default {
   computed: {
     ...mapState('account', {
       userinfo: state => state.userinfo
+    }),
+    ...mapState('answer', {
+      progress: state => state.progress
     }),
     ...mapState('question', {
       questions: state => state.questions,
@@ -96,6 +106,13 @@ export default {
           name
         }
       })
+    },
+    onProgress(card, jsonIndex) {
+      try {
+        return this.progress[jsonIndex][card.name] || 0
+      } catch (error) {
+        return 0
+      }
     }
   },
   async created() {
