@@ -94,9 +94,14 @@ export default {
   methods: {
     ...mapActions('question', ['get', 'post']),
     onClick(jsonIndex, name) {
+      const sexMap = {
+        1: '男',
+        2: '女',
+        0: '未知'
+      }
       this.post({
         idwechat: this.userinfo.idwechat,
-        gender: '男',
+        gender: sexMap[this.userinfo.sex],
         qtnaireversion: this.questions[0].qtnaireversion
       })
       this.$router.push({

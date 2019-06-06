@@ -18,7 +18,7 @@ export default {
       window.localStorage.setItem(question__view_report, true)
     },
     get_assess (state) {
-      state.viewreport = window.localStorage.getItem(question__view_report) || false
+      state.viewreport = Boolean(window.localStorage.getItem(question__view_report)) || false
     },
     set_idqtnaire (state, payload) {
       state.idqtnaire = payload

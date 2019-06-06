@@ -24,12 +24,15 @@ export default {
             }
           })
 
-          try {
-            next(store.state.account.snsapi_userinfo.access_token, { name: 'home' })
-            console.log('access_token>>>>>>', store.state.account.snsapi_userinfo.access_token)
-          } catch (error) {
-            next({ name: 'home' })
-          }
+          next({ name: 'home' })
+
+          // try {
+          //   next(store.state.account.snsapi_userinfo.access_token, { name: 'home' })
+          //   console.log('access_token>>>>>>', store.state.account.snsapi_userinfo.access_token)
+          // } catch (error) {
+          //   console.log('get access_token failed')
+          //   next({ name: 'home' })
+          // }
         }
       })
     } else {
