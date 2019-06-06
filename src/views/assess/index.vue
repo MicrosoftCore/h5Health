@@ -1,6 +1,6 @@
 <template>
   <div class="assess">
-    <div class="assess-wrapper" v-if="id">
+    <div class="assess-wrapper" v-if="showreport">
       <tab>
         <tab-item selected @on-item-click="onItemClick">近期</tab-item>
         <tab-item @on-item-click="onItemClick">终身</tab-item>
@@ -73,7 +73,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('question', ['idqtnaire']),
+    ...mapState('question', ['idqtnaire', 'viewreport']),
     id() {
       let { idqtnaire = '' } = this.$route.query
       return idqtnaire || this.idqtnaire
@@ -100,14 +100,18 @@ export default {
       if (this.selected === 0) {
         return {
           value1: fyrsRisk,
-          value2: (fyrsLowrisk + fyrsHighrisk) / 2
+          value2: fyrsLowrisk
         }
       } else {
         return {
           value1: lifetimeRisk,
-          value2: (lifetimeLowrisk + lifetimeHighrisk) / 2
+          value2: lifetimeLowrisk
         }
       }
+    },
+    showreport() {
+      let { idqtnaire = '' } = this.$route.query
+      return this.viewreport || idqtnaire
     }
   },
   methods: {
@@ -302,6 +306,8 @@ export default {
     }
   },
   async mounted() {
+    if (!this.showreport) return
+
     let cdcthreshold = await service['cdcthreshold.queryinfo']({
       params: {
         idqtnaire: this.id
@@ -357,7 +363,7 @@ export default {
       this.lifetimeRiskTips = '未知'
     }
 
-    this.id && this.onSetOption()
+    this.onSetOption()
   }
 }
 </script>

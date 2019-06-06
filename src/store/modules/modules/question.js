@@ -1,16 +1,24 @@
 import service from '@/common/service'
-import { question__surveyjs_idqtnaire, question__surveyjs_loadvisible } from '@/common/storage'
+import { answer__view_report, question__surveyjs_idqtnaire, question__surveyjs_loadvisible } from '@/common/storage'
 
 export default {
   namespaced: true,
   state: {
     idqtnaire: null,
     questions: [],
+    viewreport: false,
     visible: {}
   },
   mutations: {
     set (state, payload) {
       state.questions = payload
+    },
+    set_assess (state) {
+      state.viewreport = true
+      window.localStorage.setItem(answer__view_report, true)
+    },
+    get_assess (state) {
+      state.viewreport = window.localStorage.getItem(answer__view_report) || false
     },
     set_idqtnaire (state, payload) {
       state.idqtnaire = payload
@@ -41,12 +49,14 @@ export default {
       let { msg } = await service['cdcqtnaire.add'](payload)
       commit('set_idqtnaire', msg)
     },
-    async put ({ rootState }) {
+    async put ({ commit, rootState }) {
       await service['cdcqtnaire.update']({
         idqtnaire: rootState.question.idqtnaire
       })
+      commit('set_assess')
     },
     load ({ commit }) {
+      commit('get_assess')
       commit('get_idqtnaire')
       commit('get_visible')
     }
