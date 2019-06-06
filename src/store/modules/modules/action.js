@@ -17,6 +17,9 @@ export default {
       commit('question/get_visible', null, {
         root: true
       })
+    },
+    clear () {
+      window.localStorage.clear()
     }
   }
 }

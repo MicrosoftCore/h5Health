@@ -32,6 +32,8 @@ export default {
 
       if (state.userinfo && state.userinfo['openid']) return
 
+      window.localStorage.clear()
+      
       let snsapi_userinfo = await service['cdcHttpClient.getAccessToken'](payload)
       let user_info = await service['cdcHttpClient.getUserinfo']({
         params: {

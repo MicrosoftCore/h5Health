@@ -29,6 +29,7 @@
         v-model="showAction"
         v-bind="sheetOptions"
         @on-click-menu-reset="showConfirm = true"
+        @on-click-menu-clear="clear"
       ></actionsheet>
     </div>
   </div>
@@ -63,6 +64,10 @@ export default {
           {
             label: '重新填写',
             value: 'reset'
+          },
+          {
+            label: '清除全部缓存',
+            value: 'clear'
           }
         ]
       },
@@ -82,7 +87,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('action', ['reset'])
+    ...mapActions('action', ['reset', 'clear'])
   }
 }
 </script>
