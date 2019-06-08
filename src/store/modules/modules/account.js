@@ -30,10 +30,10 @@ export default {
       commit('get_snsapi_userinfo')
       commit('get_userinfo')
 
-      if (state.userinfo && state.userinfo['openid']) return
+      if ((state.userinfo && state.userinfo['openid']) || !payload) return
 
       window.localStorage.clear()
-      
+
       let snsapi_userinfo = await service['cdcHttpClient.getAccessToken'](payload)
       let user_info = await service['cdcHttpClient.getUserinfo']({
         params: {

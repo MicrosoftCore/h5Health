@@ -8,6 +8,7 @@ export default {
   install (Vue) {
     Vue.prototype.$axios = axios
 
+    store.dispatch('account/load')
     store.dispatch('answer/load')
     store.dispatch('question/load')
 
