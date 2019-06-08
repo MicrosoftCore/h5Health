@@ -60,7 +60,6 @@ export default {
     ...mapMutations('answer', ['set_model', 'set_progress']),
     ...mapMutations('question', ['set_visible']),
     killTimer() {
-      console.log('>>>>>>', 'kill the timer')
       clearInterval(timerId)
     }
   },
@@ -135,7 +134,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import 'https://cdn.bootcss.com/survey-vue/1.0.87/survey.min.css';
 .flex-column {
   background-color: #ffffff;
 }
