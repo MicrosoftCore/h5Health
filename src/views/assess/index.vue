@@ -11,26 +11,46 @@
         <div class="assess-wrapper__card">
           <group>
             <group-title slot="title">
-              <span class="iconfont tabbar-pinggu"></span>
               <span>评估结果</span>
             </group-title>
+            <cell-box v-if="selected === 0">
+              <div class="wrapper">
+                <div class="left">
+                  <span class="iconfont shandian"></span>
+                </div>
+                <div class="right">
+                  <span>您未来五年的发病风险是{{ cdcqtnaire.fyrsRisk || 0 }},为一般人群的{{ cdcqtnaire.fyrsMultiplerisk || 0 }}倍;</span>
+                </div>
+              </div>
+            </cell-box>
+            <cell-box v-if="selected === 1">
+              <div class="wrapper">
+                <div class="left">
+                  <span class="iconfont shandian"></span>
+                </div>
+                <div class="right">
+                  <span>您终身发病风险是{{ cdcqtnaire.lifetimeRisk || 0 }}, 为一般人群的{{ cdcqtnaire.lifetimeMultiplerisk || 0 }}倍;</span>
+                </div>
+              </div>
+            </cell-box>
             <cell-box>
-              <ul>
-                <li
-                  v-if="selected === 0"
-                >您未来五年的发病风险是{{ cdcqtnaire.fyrsRisk || 0 }},为一般人群的{{ cdcqtnaire.fyrsMultiplerisk || 0 }}倍;</li>
-                <li
-                  v-if="selected === 1"
-                >您终身发病风险是{{ cdcqtnaire.lifetimeRisk || 0 }}, 为一般人群的{{ cdcqtnaire.lifetimeMultiplerisk || 0 }}倍;</li>
-                <li>如果您调整您的生活习惯, 风险值将会降低{{ cdcqtnaire.reducerisk || 0 }}。</li>
-              </ul>
+              <div class="wrapper">
+                <div class="left">
+                  <span class="iconfont tishi"></span>
+                </div>
+                <div class="right">
+                  <span>如果您调整您的生活习惯, 风险值将会降低{{ cdcqtnaire.reducerisk || 0 }}。</span>
+                </div>
+              </div>
             </cell-box>
             <cell-box v-if="cdcqtnaire.score">
-              <div class="tips">
-                <div class="left">*</div>
-                <div
-                  class="right"
-                >您的答题一致性评价为{{ cdcqtnaire.score }}, 如果您的分数低于80分, 系统计算的患癌风险值可能无法反映真实情况, 建议您重新答题。</div>
+              <div class="wrapper">
+                <div class="left">
+                  <span class="iconfont jinggao"></span>
+                </div>
+                <div class="right">
+                  <span>您的答题一致性评价为{{ cdcqtnaire.score }}, 如果您的分数低于80分, 系统计算的患癌风险值可能无法反映真实情况, 建议您重新答题。</span>
+                </div>
               </div>
             </cell-box>
           </group>
@@ -119,7 +139,7 @@ export default {
       let instance = window.echarts.init(this.$refs.instance)
 
       instance.setOption({
-        backgroundColor: '#fff',
+        backgroundColor: '#fafafa',
         xAxis: {
           show: false
         },
@@ -132,7 +152,7 @@ export default {
             radius: '70%',
             startAngle: 0,
             endAngle: 359.9,
-            splitNumber: 100,
+            splitNumber: 80,
             hoverAnimation: true,
             axisTick: {
               show: false
@@ -141,7 +161,7 @@ export default {
               length: 25,
               lineStyle: {
                 width: 3,
-                color: '#fff'
+                color: '#fafafa'
               }
             },
             axisLabel: {
@@ -374,7 +394,7 @@ export default {
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
-  background-color: #ffffff;
+  background-color: #fafafa;
   .assess-wrapper {
     height: 100%;
     display: flex;
@@ -389,40 +409,44 @@ export default {
     }
     .assess-wrapper__card {
       margin: 20px 20px;
-      padding: 1px 0;
+      padding: 1px 10px 1px 20px;
       border-radius: 3px;
-      box-shadow: 0px -2px 10px #f5f5f5, -2px 0px 10px #f5f5f5,
-        2px 0px 10px #f5f5f5, 0px 2px 10px #f5f5f5;
+      box-shadow: 0px -4px 20px #f0f0f0, -4px 0px 20px #f0f0f0,
+        4px 0px 20px #f0f0f0, 0px 4px 20px #f0f0f0;
       background-color: #ffffff;
       /deep/.weui-cells__title {
         margin: 10px 0;
-        font-size: 15px;
+        font-size: 16px;
         color: #7a7a7a;
+        color: #333333;
       }
       /deep/.weui-cells {
         &::after {
           border-bottom: none;
         }
         .weui-cell {
-          letter-spacing: 1px;
+          line-height: 24px;
           text-align: justify;
-          font-size: 14px;
+          font-size: 15px;
           color: #7a7a7a;
-          .tips {
+          color: #333333;
+          .wrapper {
             display: flex;
             .left {
-              width: 15px;
-              padding-left: 5px;
+              margin-right: 10px;
+              font-size: 20px;
+              .shandian {
+                color: #0187f6;
+              }
+              .tishi {
+                color: #fb9400;
+              }
+              .jinggao {
+                color: #f43530;
+              }
             }
             .right {
               flex: 1;
-              line-height: 24px;
-            }
-          }
-          ul {
-            margin: 0;
-            padding-left: 20px;
-            li {
               line-height: 24px;
             }
           }
