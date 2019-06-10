@@ -1,10 +1,10 @@
 <template>
   <div class="assess">
     <div class="assess-wrapper" v-if="showreport">
-      <tab>
-        <tab-item selected @on-item-click="onItemClick">近期</tab-item>
-        <tab-item @on-item-click="onItemClick">终身</tab-item>
-      </tab>
+      <button-tab>
+        <button-tab-item selected @on-item-click="onItemClick">近期风险</button-tab-item>
+        <button-tab-item @on-item-click="onItemClick">终身风险</button-tab-item>
+      </button-tab>
       <div class="flex-column__stretch">
         <div ref="instance" style="width: 100%; height: 250px;"></div>
         <x-button type="primary" mini @click.native="onDetail">查看风险</x-button>
@@ -69,14 +69,21 @@
 
 <script>
 import service from '@/common/service'
-import { XButton, Tab, TabItem, Group, GroupTitle, CellBox } from 'vux'
 import { mapState } from 'vuex'
+import {
+  XButton,
+  ButtonTab,
+  ButtonTabItem,
+  Group,
+  GroupTitle,
+  CellBox
+} from 'vux'
 
 export default {
   components: {
     XButton,
-    Tab,
-    TabItem,
+    ButtonTab,
+    ButtonTabItem,
     Group,
     GroupTitle,
     CellBox
@@ -93,7 +100,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('question', ['idqtnaire', 'viewreport']),
+    ...mapState('question', ['idqtnaire', 'showAssess']),
     id() {
       let { idqtnaire = '' } = this.$route.query
       return idqtnaire || this.idqtnaire
@@ -131,7 +138,7 @@ export default {
     },
     showreport() {
       let { idqtnaire = '' } = this.$route.query
-      return this.viewreport || idqtnaire
+      return this.showAssess || idqtnaire
     }
   },
   methods: {
@@ -406,6 +413,9 @@ export default {
       margin-bottom: 40px;
       border-radius: 50px;
       font-size: 15px;
+    }
+    .vux-button-group {
+      padding: 20px 30px 0;
     }
     .assess-wrapper__card {
       margin: 20px 20px;
