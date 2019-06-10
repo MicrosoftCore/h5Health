@@ -1,24 +1,45 @@
 import service from '@/common/service'
-import { question__view_report, question__surveyjs_idqtnaire, question__surveyjs_loadvisible } from '@/common/storage'
+import {
+  question__show_assess,
+  question__show_assess_dot,
+  question__surveyjs_idqtnaire,
+  question__surveyjs_loadvisible
+} from '@/common/storage'
 
 export default {
   namespaced: true,
   state: {
     idqtnaire: null,
     questions: [],
-    viewreport: false,
+    showAssess: false,
+    showAssessDot: false,
     visible: {}
   },
   mutations: {
     set (state, payload) {
       state.questions = payload
     },
-    set_assess (state) {
-      state.viewreport = true
-      window.localStorage.setItem(question__view_report, true)
+    set_assess (state, payload = true) {
+      state.showAssess = payload
+      window.localStorage.setItem(question__show_assess, payload)
     },
     get_assess (state) {
-      state.viewreport = Boolean(window.localStorage.getItem(question__view_report)) || false
+      let showAssess = false
+      let storage = window.localStorage.getItem(question__show_assess)
+      if (storage === 'true') showAssess = true
+      if (storage === 'false') showAssess = false
+      state.showAssess = showAssess
+    },
+    set_assess_dot (state, payload = true) {
+      state.showAssessDot = payload
+      window.localStorage.setItem(question__show_assess_dot, payload)
+    },
+    get_assess_dot (state) {
+      let showAssessDot = false
+      let storage = window.localStorage.getItem(question__show_assess_dot)
+      if (storage === 'true') showAssessDot = true
+      if (storage === 'false') showAssessDot = false
+      state.showAssessDot = showAssessDot
     },
     set_idqtnaire (state, payload) {
       state.idqtnaire = payload
@@ -62,9 +83,11 @@ export default {
         idqtnaire: rootState.question.idqtnaire
       })
       commit('set_assess')
+      commit('set_assess_dot')
     },
     load ({ commit }) {
       commit('get_assess')
+      commit('get_assess_dot')
       commit('get_idqtnaire')
       commit('get_visible')
     }

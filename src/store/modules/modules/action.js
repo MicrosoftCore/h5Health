@@ -5,13 +5,10 @@ export default {
   namespaced: true,
   actions: {
     reload ({ commit }) {
-      commit('answer/get_progress', null, {
+      commit('answer/load', null, {
         root: true
       })
-      commit('question/get_assess', null, {
-        root: true
-      })
-      commit('question/get_visible', null, {
+      commit('question/load', null, {
         root: true
       })
     },
@@ -25,12 +22,15 @@ export default {
     },
     clear ({ dispatch }) {
       window.localStorage.clear()
+      dispatch('reload')
       AlertModule.show({
         title: '提示',
         content: '已成功清除全部缓存',
-        hideOnBlur: true
+        hideOnBlur: true,
+        onHide () {
+          window.location.reload()
+        }
       })
-      dispatch('reload')
     }
   }
 }
