@@ -1,35 +1,34 @@
 <template>
   <div class="assess">
     <div class="assess-wrapper" v-if="showreport">
-      <button-tab>
-        <button-tab-item selected @on-item-click="onItemClick">近期风险</button-tab-item>
-        <button-tab-item @on-item-click="onItemClick">终身风险</button-tab-item>
-      </button-tab>
       <div class="flex-column__stretch">
+        <button-tab>
+          <button-tab-item selected @on-item-click="onItemClick">近期风险</button-tab-item>
+          <button-tab-item @on-item-click="onItemClick">终身风险</button-tab-item>
+        </button-tab>
         <div ref="instance" style="width: 100%; height: 250px;"></div>
-        <x-button type="primary" mini @click.native="onDetail">查看风险</x-button>
+        <x-button
+          type="primary"
+          mini
+          :plain="cdcqtnaire.idsubmission ? true : false"
+          @click.native="onFillIn"
+        >
+          <span>{{ cdcqtnaire.idsubmission ? '已申请' : '未申请' }}</span>
+        </x-button>
         <div class="assess-wrapper__card">
-          <group>
-            <group-title slot="title">
-              <span>评估结果</span>
-            </group-title>
-            <cell-box v-if="selected === 0">
+          <group title="评估结果">
+            <cell-box is-link @click.native="onDetail">
               <div class="wrapper">
                 <div class="left">
                   <span class="iconfont shandian"></span>
                 </div>
                 <div class="right">
-                  <span>您未来五年的发病风险是{{ cdcqtnaire.fyrsRisk || 0 }},为一般人群的{{ cdcqtnaire.fyrsMultiplerisk || 0 }}倍;</span>
-                </div>
-              </div>
-            </cell-box>
-            <cell-box v-if="selected === 1">
-              <div class="wrapper">
-                <div class="left">
-                  <span class="iconfont shandian"></span>
-                </div>
-                <div class="right">
-                  <span>您终身发病风险是{{ cdcqtnaire.lifetimeRisk || 0 }}, 为一般人群的{{ cdcqtnaire.lifetimeMultiplerisk || 0 }}倍;</span>
+                  <span v-if="selected === 0">
+                    <span>您未来五年的发病风险是{{ cdcqtnaire.fyrsRisk || 0 }}, 为一般人群的{{ cdcqtnaire.fyrsMultiplerisk || 0 }}倍;</span>
+                  </span>
+                  <span v-if="selected === 1">
+                    <span>您终身发病风险是{{ cdcqtnaire.lifetimeRisk || 0 }}, 为一般人群的{{ cdcqtnaire.lifetimeMultiplerisk || 0 }}倍;</span>
+                  </span>
                 </div>
               </div>
             </cell-box>
@@ -53,6 +52,9 @@
                 </div>
               </div>
             </cell-box>
+            <cell-box :border-intent="false">
+              <div class="flex-center button" @click="onDetail">查看风险</div>
+            </cell-box>
           </group>
         </div>
       </div>
@@ -70,14 +72,7 @@
 <script>
 import service from '@/common/service'
 import { mapState } from 'vuex'
-import {
-  XButton,
-  ButtonTab,
-  ButtonTabItem,
-  Group,
-  GroupTitle,
-  CellBox
-} from 'vux'
+import { XButton, ButtonTab, ButtonTabItem, Group, CellBox } from 'vux'
 
 export default {
   components: {
@@ -85,7 +80,6 @@ export default {
     ButtonTab,
     ButtonTabItem,
     Group,
-    GroupTitle,
     CellBox
   },
   data() {
@@ -117,9 +111,9 @@ export default {
     riskValue() {
       let {
         fyrsLowrisk,
-        fyrsHighrisk,
-        lifetimeLowrisk,
-        lifetimeHighrisk
+        lifetimeLowrisk
+        // fyrsHighrisk,
+        // lifetimeHighrisk
       } = this.cdcthreshold
 
       let { fyrsRisk, lifetimeRisk } = this.cdcqtnaire
@@ -146,7 +140,7 @@ export default {
       let instance = window.echarts.init(this.$refs.instance)
 
       instance.setOption({
-        backgroundColor: '#fafafa',
+        backgroundColor: '#fbfbfb',
         xAxis: {
           show: false
         },
@@ -168,7 +162,7 @@ export default {
               length: 25,
               lineStyle: {
                 width: 3,
-                color: '#fafafa'
+                color: '#fbfbfb'
               }
             },
             axisLabel: {
@@ -327,6 +321,15 @@ export default {
         }
       })
     },
+    onFillIn() {
+      this.$router.push({
+        name: 'fillin',
+        query: {
+          idsubmission: this.cdcqtnaire.idsubmission,
+          idqtnaire: this.id
+        }
+      })
+    },
     onItemClick(e) {
       this.selected = e
       this.onSetOption()
@@ -401,7 +404,7 @@ export default {
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
-  background-color: #fafafa;
+  background-color: #fbfbfb;
   .assess-wrapper {
     height: 100%;
     display: flex;
@@ -421,14 +424,14 @@ export default {
       margin: 20px 20px;
       padding: 1px 10px 1px 20px;
       border-radius: 3px;
-      box-shadow: 0px -4px 20px #f0f0f0, -4px 0px 20px #f0f0f0,
-        4px 0px 20px #f0f0f0, 0px 4px 20px #f0f0f0;
+      box-shadow: 0px -3px 15px #f0f0f0, -3px 0px 15px #f0f0f0,
+        3px 0px 15px #f0f0f0, 0px 3px 15px #f0f0f0;
       background-color: #ffffff;
       /deep/.weui-cells__title {
         margin: 10px 0;
-        font-size: 16px;
-        color: #7a7a7a;
-        color: #333333;
+        font-size: 15px;
+        font-weight: bold;
+        color: #343434;
       }
       /deep/.weui-cells {
         &::after {
@@ -436,15 +439,12 @@ export default {
         }
         .weui-cell {
           line-height: 24px;
-          text-align: justify;
           font-size: 15px;
-          color: #7a7a7a;
           color: #333333;
           .wrapper {
             display: flex;
             .left {
               margin-right: 10px;
-              font-size: 20px;
               .shandian {
                 color: #0187f6;
               }
@@ -458,7 +458,12 @@ export default {
             .right {
               flex: 1;
               line-height: 24px;
+              padding-right: 20px;
             }
+          }
+          .button {
+            width: 100%;
+            color: #38bf69;
           }
         }
       }
