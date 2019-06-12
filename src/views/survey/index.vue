@@ -4,11 +4,15 @@
     <div class="flex-column__stretch">
       <survey :survey="survey" v-if="questions.length"></survey>
     </div>
+    <toast v-model="show1" v-bind="toastOptions">
+      <spinner type="lines"></spinner>
+      <span>正在生成评估 {{ text1 }}</span>
+    </toast>
   </div>
 </template>
 
 <script>
-import { XHeader } from 'vux'
+import { XHeader, Toast, Spinner } from 'vux'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { Model, StylesManager, Survey } from 'survey'
 StylesManager.applyTheme('darkblue')
@@ -19,11 +23,21 @@ let polling = 60000
 export default {
   components: {
     Survey,
-    XHeader
+    XHeader,
+    Toast,
+    Spinner
   },
   data() {
     return {
-      survey: new Model()
+      show1: false,
+      text1: '',
+      survey: new Model(),
+      toastOptions: {
+        type: 'text',
+        width: '13em',
+        position: 'middle',
+        isShowMask: true
+      }
     }
   },
   computed: {
@@ -106,6 +120,34 @@ export default {
       this.save_server()
       if (this.jsonIndex == this.questions.length - 1) {
         this.put()
+
+        let tick = (i, cb) => {
+          setTimeout(function() {
+            i++
+            cb(i)
+            if (i < 100) {
+              tick(i, cb)
+            }
+          }, 10)
+        }
+
+        this.show1 = true
+        tick(0, percent => {
+          this.text1 = `${percent}%`
+          if (percent === 100) {
+            setTimeout(() => {
+              this.show1 = false
+              this.$router.push({
+                name: 'assess'
+              })
+            }, 1000)
+            return
+          }
+        })
+      } else {
+        this.$router.push({
+          name: 'home'
+        })
       }
     })
 
@@ -136,5 +178,9 @@ export default {
 <style lang="less" scoped>
 .flex-column {
   background-color: #ffffff;
+  .vux-spinner {
+    stroke: #fff;
+    fill: #fff;
+  }
 }
 </style>
