@@ -2,11 +2,13 @@ import axios from 'axios'
 import store from '@/store'
 import router from '@/router'
 import OAuth2 from './OAuth2'
+import ToastPlugin from 'vux/src/plugins/toast'
 import { appid } from '@/common/config'
 
 export default {
   install (Vue) {
     Vue.prototype.$axios = axios
+    Vue.use(ToastPlugin)
 
     store.dispatch('account/load')
     store.dispatch('answer/load')
