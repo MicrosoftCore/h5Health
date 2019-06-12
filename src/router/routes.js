@@ -11,7 +11,7 @@ export default [
         path: '/home',
         name: 'home',
         meta: {
-          title: '我的问卷',
+          title: '待答问卷',
           auth: true
         },
         component: () => import('@/views/home')
@@ -65,6 +65,15 @@ export default [
       auth: true
     },
     component: () => import('@/views/risk')
+  },
+  {
+    path: '/fillin',
+    name: 'fillin',
+    meta: {
+      title: '个人信息',
+      auth: true
+    },
+    component: () => import('@/views/fillin')
   },
   {
     path: '/survey/:jsonIndex/:name',
