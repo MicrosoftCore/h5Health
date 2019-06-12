@@ -1,6 +1,6 @@
 <template>
   <div class="risk flex-column">
-    <x-header title="评估详情"/>
+    <x-header :title="$route.meta.title"/>
     <div class="flex-column__stretch">
       <div v-for="(item, index) in risks" :key="index">
         <div class="risk-card flex-align__center orange" v-if="item.hazard === 1">
@@ -38,6 +38,7 @@
 <script>
 import { XHeader } from 'vux'
 import service from '@/common/service'
+
 export default {
   components: {
     XHeader
@@ -60,7 +61,7 @@ export default {
 <style lang="less" scoped>
 .risk {
   .flex-column__stretch {
-    background-color: #ffffff;
+    background-color: #eeeff1;
     .risk-card {
       display: flex;
       margin: 20px;

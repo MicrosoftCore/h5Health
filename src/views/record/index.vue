@@ -2,6 +2,10 @@
   <div class="flex-column">
     <x-header :title="$route.meta.title"/>
     <div class="record flex-column__stretch">
+      <div class="record-tips">
+        <div>如果您打算进一步联系区域联系人参加免费检测, 使得评估结果更加可靠并且能提示可能的疾病种类, 请选择一份问卷结果作为代表结果进行申请。</div>
+        <div>提示:&nbsp;&nbsp;如果您多次申请, 填写个人信息, 将以最后一次提交的个人信息为准。</div>
+      </div>
       <timeline v-if="records.length">
         <timeline-item v-for="(item, index) in records" :key="index">
           <div class="record-card flex-align__center blue" @click="onClick(item.idqtnaire)">
@@ -73,7 +77,17 @@ export default {
 
 <style lang="less" scoped>
 .record {
-  background-color: #ffffff;
+  background-color: #eeeff1;
+  .record-tips {
+    line-height: 24px;
+    margin: 20px 15px 0;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #e5e6ea;
+    text-align: justify;
+    font-size: 14px;
+    color: #6e7b8e;
+  }
   .record-card {
     display: flex;
     margin: 0 20px;
