@@ -8,7 +8,8 @@ module.exports = {
     config.externals = {
       vue: 'Vue',
       survey: 'Survey',
-      echarts: 'echarts'
+      echarts: 'echarts',
+      moment: 'moment'
     }
     require('vux-loader').merge(config, {
       plugins: [
