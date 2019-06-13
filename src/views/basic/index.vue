@@ -67,7 +67,7 @@ export default {
         showCancel: true,
         menus: [
           {
-            label: '重新填写',
+            label: '重新答题',
             value: 'reset'
           },
           {

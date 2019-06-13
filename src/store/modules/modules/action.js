@@ -4,11 +4,11 @@ import AlertModule from 'vux/src/plugins/alert/module'
 export default {
   namespaced: true,
   actions: {
-    reload ({ commit }) {
-      commit('answer/load', null, {
+    reload ({ dispatch }) {
+      dispatch('answer/load', null, {
         root: true
       })
-      commit('question/load', null, {
+      dispatch('question/load', null, {
         root: true
       })
     },

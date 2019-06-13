@@ -58,15 +58,21 @@
         </div>
       </div>
     </div>
+    <box gap="10px 10px">
+      <x-button type="primary" v-if="showAssess" @click.native="onReset">重新答题</x-button>
+    </box>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import { Box, XButton } from 'vux'
 import UserInfo from '@/components/basic/UserInfo'
 
 export default {
   components: {
+    Box,
+    XButton,
     UserInfo
   },
   computed: {
@@ -78,6 +84,7 @@ export default {
     }),
     ...mapState('question', {
       questions: state => state.questions,
+      showAssess: state => state.showAssess,
       visible: state => state.visible
     }),
     questionsJson() {
@@ -92,6 +99,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('action', ['reset']),
     ...mapActions('question', ['get', 'post']),
     onClick(jsonIndex, name) {
       const sexMap = {
@@ -110,6 +118,13 @@ export default {
           jsonIndex,
           name
         }
+      })
+    },
+    onReset() {
+      this.$vux.confirm.show({
+        title: '提示',
+        content: '确定要重新答题吗?',
+        onConfirm: this.reset
       })
     },
     onProgress(card, jsonIndex) {
