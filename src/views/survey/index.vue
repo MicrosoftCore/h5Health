@@ -182,5 +182,11 @@ export default {
     stroke: #fff;
     fill: #fff;
   }
+  /deep/.sv_q_footer {
+    .sv_matrix_dynamic_button {
+      margin-left: 7px;
+      padding: 3.6px 24px;
+    }
+  }
 }
 </style>

@@ -9,7 +9,12 @@
         <cell title="微信名" :value="userinfo.nickname"></cell>
         <cell title="性别" :value="sexMap[userinfo.sex]"></cell>
       </group>
-      <group title="身份证信息" label-width="6em" label-margin-right="2em" label-align="left">
+      <group
+        title="身份证号码由系统自动不可逆编码, 编码结果如: 7c00526f4d。身份证请务必填写正确"
+        label-width="6em"
+        label-margin-right="2em"
+        label-align="left"
+      >
         <x-input
           ref="idCode"
           title="身份证号"
@@ -31,8 +36,12 @@
           :is-type="onValidateConfirm"
         ></x-input>
       </group>
-      <group title="填写快递地址" label-width="6em" label-margin-right="2em" label-align="left">
-        <x-input ref="name" title="单位全称" placeholder="请输入单位全称" required v-model="form.name"></x-input>
+      <group
+        title="提醒务必填写真实信息, 否则无法联系上, 即申请无效"
+        label-width="6em"
+        label-margin-right="2em"
+        label-align="left"
+      >
         <x-input
           ref="tel1"
           title="手机号"
@@ -42,6 +51,9 @@
           required
           v-model="form.tel1"
         ></x-input>
+      </group>
+      <group title="填写快递地址" label-width="6em" label-margin-right="2em" label-align="left">
+        <x-input ref="name" title="单位全称" placeholder="请输入单位全称" required v-model="form.name"></x-input>
         <x-address
           ref="region"
           title="地址选择"
@@ -82,7 +94,7 @@
 
 <script>
 import service from '@/common/service'
-import IdNumberValidator from '@/plugins/id.number.validator'
+import IdCardValidator from '@/utils/validator/IdCardValidator'
 import md5 from 'js-md5'
 import { mapState } from 'vuex'
 import {
@@ -99,6 +111,8 @@ import {
   XInput,
   XTextarea
 } from 'vux'
+
+const validator = new IdCardValidator()
 
 export default {
   directives: {
@@ -146,19 +160,36 @@ export default {
       return this.$route.query.idqtnaire
     },
     postData() {
+      let idCode = this.form['idCode']
+      let birth = 19700101
+
+      try {
+        validator.validate(idCode)
+        birth = validator.info.birthday.replace(/-/g, '')
+      } catch (error) {
+        /**todo... */
+      }
+
       return {
         ...this.form,
-        idCode: md5(this.form['idCode'].toLocaleUpperCase()),
-        idCodeSix: md5(this.form['idCodeSix'].toLocaleUpperCase()),
+        idCode: md5(idCode.toLocaleUpperCase()),
+        idCodeSix: idCode.slice(0, 6),
+        gender: this.sexMap[this.userinfo.sex],
+        birth: Number(birth),
         region: JSON.stringify(this.form['region'])
       }
     }
   },
   methods: {
     onValidateId(value) {
-      return {
-        valid: IdNumberValidator(value).isTrue,
-        msg: '请输入正确的身份证号码'
+      let result = validator.validate(value.toLocaleUpperCase())
+      if (result) {
+        return { valid: true }
+      } else {
+        return {
+          valid: false,
+          msg: '请输入正确的身份证号码'
+        }
       }
     },
     onValidateConfirm(value) {
