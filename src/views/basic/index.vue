@@ -67,7 +67,8 @@ export default {
         showCancel: true,
         menus: [
           {
-            label: '重新答题',
+            label:
+              '重新答题<br/><span style="color: #666; font-size: 12px;">本次答题不满意，再答一次更准确</span>',
             value: 'reset'
           },
           {

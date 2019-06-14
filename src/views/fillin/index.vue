@@ -63,6 +63,7 @@
           :list="list"
           value-text-align="left"
           label-align="justify"
+          @on-shadow-change="onShadowChange"
         ></x-address>
         <x-textarea
           ref="address"
@@ -101,7 +102,7 @@ import {
   Card,
   Cell,
   CheckIcon,
-  ChinaAddressData,
+  ChinaAddressV4Data,
   Group,
   Popup,
   TransferDom,
@@ -135,7 +136,8 @@ export default {
       approve: false,
       showPopup: false,
       htmlString: '',
-      list: ChinaAddressData,
+      list: ChinaAddressV4Data,
+      region: [],
       sexMap: {
         0: '未知',
         1: '男',
@@ -176,7 +178,7 @@ export default {
         idCodeSix: idCode.slice(0, 6),
         gender: this.sexMap[this.userinfo.sex],
         birth: Number(birth),
-        region: JSON.stringify(this.form['region'])
+        region: JSON.stringify(this.region)
       }
     }
   },
@@ -197,6 +199,9 @@ export default {
         valid: value === this.form.idCode,
         msg: '两次输入的身份证号码不一致'
       }
+    },
+    onShadowChange(ids, names) {
+      this.region = names
     },
     async onSubmit() {
       let that = this
@@ -228,9 +233,7 @@ export default {
           type: 'text',
           isShowMask: true,
           onHide() {
-            that.$router.push({
-              name: 'assess'
-            })
+            that.$router.back(-1)
           }
         })
       }
