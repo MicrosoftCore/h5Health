@@ -1,10 +1,15 @@
 <template>
   <div class="userInfo">
     <div class="flex-align__center" v-if="userinfo">
-      <img class="userInfo__avatar vux-1px" :src="userinfo.headimgurl" alt>
+      <img class="userInfo__avatar vux-1px" :src="headimgurl" alt>
       <div class="userInfo__label">
         <div class="name">{{ userinfo.nickname }}</div>
-        <div class="phone">位置 : {{ userinfo.province }}省{{ userinfo.city }}市</div>
+        <div class="phone">
+          <span
+            v-if="userinfo.province && userinfo.city"
+          >位置 : {{ userinfo.province }}省{{ userinfo.city }}市</span>
+          <span v-else>用户编号 : {{ userinfo.idwechat }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -14,7 +19,12 @@
 import { mapState } from 'vuex'
 export default {
   computed: {
-    ...mapState('account', ['userinfo'])
+    ...mapState('account', ['userinfo']),
+    headimgurl() {
+      return this.userinfo.headimgurl
+        ? this.userinfo.headimgurl
+        : require('@/assets/images/timg.jpg')
+    }
   }
 }
 </script>
