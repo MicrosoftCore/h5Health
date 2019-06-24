@@ -2,8 +2,13 @@
   <div class="profile">
     <UserInfo/>
     <group>
+      <cell>
+        <span class="iconfont bianhao" slot="icon"></span>
+        <span class="title" slot="title">用户编号</span>
+        <span>{{ userinfo.idwechat }}</span>
+      </cell>
       <cell-box is-link link="/record">
-        <span class="iconfont pinggu"></span>
+        <span class="iconfont jilu"></span>
         <span class="title">答题记录</span>
       </cell-box>
     </group>
@@ -21,36 +26,55 @@
 </template>
 
 <script>
-import { CellBox, Group } from 'vux'
+import { mapState } from 'vuex'
+import { Cell, CellBox, Group } from 'vux'
 import UserInfo from '@/components/basic/UserInfo'
 
 export default {
   components: {
+    Cell,
     CellBox,
     Group,
     UserInfo
+  },
+  computed: {
+    ...mapState('account', ['userinfo'])
   }
 }
 </script>
 
 <style lang="less" scoped>
 .profile {
-  .iconfont,
-  .title {
-    color: #333333;
+  .iconfont {
+    font-size: 19px;
   }
   .title {
     margin-left: 15px;
     font-size: 15px;
+    color: #333333;
   }
-  .pinggu {
-    color: #3c8dd9;
+  .jilu {
+    color: #6abd0b;
   }
   .wenti {
     color: #ff8000;
   }
   .guanyu {
     color: #6abd0b;
+  }
+  .bianhao {
+    color: #4e8cee;
+  }
+}
+/deep/ .weui-cell {
+  &::before {
+    left: 50px;
+  }
+  .vux-cell-primary p {
+    line-height: 21px;
+  }
+  .weui-cell__ft {
+    font-size: 16px;
   }
 }
 </style>

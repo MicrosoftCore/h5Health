@@ -4,7 +4,7 @@
       <img class="userInfo__avatar vux-1px" :src="userinfo.headimgurl" alt>
       <div class="userInfo__label">
         <div class="name">{{ userinfo.nickname }}</div>
-        <div class="phone">位置: {{ userinfo.province }}省{{ userinfo.city }}市</div>
+        <div class="phone">位置 : {{ userinfo.province }}省{{ userinfo.city }}市</div>
       </div>
     </div>
   </div>
