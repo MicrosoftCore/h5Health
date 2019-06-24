@@ -109,7 +109,7 @@ export default {
       }
       this.post({
         idwechat: this.userinfo.idwechat,
-        gender: sexMap[this.userinfo.sex],
+        gender: sexMap[this.userinfo.sex] || '女',
         qtnaireversion: this.questions[0].qtnaireversion
       })
       this.$router.push({

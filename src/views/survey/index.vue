@@ -41,9 +41,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('question', {
-      questions: state => state.questions
-    }),
+    ...mapState('question', ['questions', 'showAssess']),
     jsonIndex() {
       return this.$route.params.jsonIndex
     },
@@ -71,6 +69,7 @@ export default {
   methods: {
     ...mapActions('answer', ['get_state', 'set_state', 'save_server']),
     ...mapActions('question', ['get', 'put']),
+    ...mapMutations('action', ['set_popup']),
     ...mapMutations('answer', ['set_model', 'set_progress']),
     ...mapMutations('question', ['set_visible']),
     killTimer() {
@@ -148,6 +147,12 @@ export default {
         this.$router.push({
           name: 'home'
         })
+        if (!this.showAssess) {
+          this.set_popup({
+            show: true,
+            text: '请继续填写'
+          })
+        }
       }
     })
 
