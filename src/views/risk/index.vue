@@ -12,7 +12,8 @@
               <!-- <span class="span2">昨天</span>
               <span class="span1">1726</span>
               <span class="span2">步</span>-->
-              <span>{{ item.factorname }}</span>
+              <span class="span1">{{ item.factorname }}</span>
+              <span class="span2">习惯有害</span>
             </div>
             <div class="bottom">{{ item.description }}</div>
           </div>
@@ -25,7 +26,8 @@
             <div class="top flex-align__center">
               <!-- <span class="span1">09:00</span>
               <span class="span2">就诊提醒</span>-->
-              <span>{{ item.factorname }}</span>
+              <span class="span1">{{ item.factorname }}</span>
+              <span class="span2">习惯有益</span>
             </div>
             <div class="bottom">{{ item.description }}</div>
           </div>
@@ -81,11 +83,15 @@ export default {
         .top {
           .span1 {
             margin-right: 10px;
-            font-size: 25px;
+            font-size: 20px;
           }
           .span2 {
+            display: inline-block;
             margin-right: 10px;
-            font-size: 14px;
+            padding: 1px 5px;
+            border-radius: 3px;
+            background-color: rgba(255, 255, 2555, 0.3);
+            font-size: 13px;
           }
         }
         .bottom {
