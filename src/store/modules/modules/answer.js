@@ -13,9 +13,11 @@ export default {
       state.model = payload
     },
     set_progress (state, { jsonIndex, name }) {
+      let data = state.model.data
+
       let questions = state.model.getPageByName(name).questions.filter(item => item.visible)
 
-      let answered = questions.filter(question => state.model.data[question.name])
+      let answered = questions.filter(question => data[question.name] || data[question.valueName])
 
       state.progress[jsonIndex] = {
         ...state.progress[jsonIndex],
@@ -48,10 +50,15 @@ export default {
 
       window.localStorage.setItem(answer__surveyjs_loadstate, JSON.stringify(storage))
     },
-    async save_server ({ state, rootState }) {
+    async save_server ({ rootState }) {
+      let item = window.localStorage.getItem(answer__surveyjs_loadstate) || ''
+      let storage = (item && JSON.parse(item)) || {}
+
+      let jsonobj = Object.values(storage).reduce((iter, item) => Object.assign(iter, item.data), {})
+
       await service['cdcanswer.add']({
         idqtnaire: rootState.question.idqtnaire,
-        jsonobj: JSON.stringify(state.model.data)
+        jsonobj: JSON.stringify(jsonobj)
       })
     },
     load ({ commit }) {
