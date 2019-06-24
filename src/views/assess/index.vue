@@ -13,21 +13,21 @@
           :plain="cdcqtnaire.idsubmission ? true : false"
           @click.native="onFillIn"
         >
-          <span>{{ cdcqtnaire.idsubmission ? '已申请' : '未申请' }}</span>
+          <span>{{ cdcqtnaire.idsubmission ? '已申请' : '申请详细报告' }}</span>
         </x-button>
         <div class="assess-wrapper__card">
           <group title="评估结果">
-            <cell-box is-link @click.native="onDetail">
+            <cell-box>
               <div class="wrapper">
                 <div class="left">
                   <span class="iconfont shandian"></span>
                 </div>
                 <div class="right">
                   <span v-if="selected === 0">
-                    <span>您未来五年的发病风险是{{ cdcqtnaire.fyrsRisk || 0 }}, 为一般人群的{{ cdcqtnaire.fyrsMultiplerisk || 0 }}倍;</span>
+                    <span>您未来五年的发病风险是 {{ cdcqtnaire.fyrsRisk || 0 }}, 为一般人群的 {{ cdcqtnaire.fyrsMultiplerisk || 0 }} 倍</span>
                   </span>
                   <span v-if="selected === 1">
-                    <span>您终身发病风险是{{ cdcqtnaire.lifetimeRisk || 0 }}, 为一般人群的{{ cdcqtnaire.lifetimeMultiplerisk || 0 }}倍;</span>
+                    <span>您终身发病风险是 {{ cdcqtnaire.lifetimeRisk || 0 }}, 为一般人群的 {{ cdcqtnaire.lifetimeMultiplerisk || 0 }} 倍</span>
                   </span>
                 </div>
               </div>
@@ -38,7 +38,7 @@
                   <span class="iconfont tishi"></span>
                 </div>
                 <div class="right">
-                  <span>如果您调整您的生活习惯, 风险值将会降低{{ cdcqtnaire.reducerisk || 0 }}。</span>
+                  <span>如果您调整您的生活习惯, 风险值将会降低 {{ cdcqtnaire.reducerisk || 0 }}</span>
                 </div>
               </div>
             </cell-box>
@@ -48,7 +48,7 @@
                   <span class="iconfont jinggao"></span>
                 </div>
                 <div class="right">
-                  <span>您的答题一致性评价为{{ cdcqtnaire.score }}, 如果您的分数低于80分, 系统计算的患癌风险值可能无法反映真实情况, 建议您重新答题。</span>
+                  <span>您的答题一致性评价为{{ cdcqtnaire.score }}, 如果您的分数低于80分, 系统计算的患癌风险值可能无法反映真实情况, 建议您重新答题</span>
                 </div>
               </div>
             </cell-box>
@@ -251,7 +251,7 @@ export default {
                     show: true,
                     formatter: `{c|${this.riskTips}} {b|${
                       this.riskType
-                    }} \n {a|综合患癌风险值}`,
+                    }}\n{a|综合患癌风险值}`,
                     rich: {
                       c: {
                         color: '#333',
@@ -261,13 +261,13 @@ export default {
                       },
                       b: {
                         color: '#333',
-                        fontSize: 13
+                        fontSize: 12
                       },
                       a: {
                         align: 'center',
                         color: '#999',
-                        fontSize: 12,
-                        lineHeight: 20
+                        fontSize: 13,
+                        lineHeight: 30
                       }
                     },
                     position: 'center'
@@ -438,13 +438,17 @@ export default {
           border-bottom: none;
         }
         .weui-cell {
-          line-height: 24px;
           font-size: 15px;
           color: #333333;
+          &:not(:last-child)::before {
+            left: 53px;
+          }
           .wrapper {
             display: flex;
+            align-items: center;
             .left {
-              margin-right: 10px;
+              margin-right: 15px;
+              font-size: 22px;
               .shandian {
                 color: #0187f6;
               }
@@ -457,8 +461,7 @@ export default {
             }
             .right {
               flex: 1;
-              line-height: 24px;
-              padding-right: 20px;
+              text-align: justify;
             }
           }
           .button {

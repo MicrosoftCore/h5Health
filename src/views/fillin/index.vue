@@ -300,6 +300,9 @@ export default {
   }
   /deep/.weui-cells {
     font-size: 16px;
+    .vux-label {
+      font-family: '微软雅黑';
+    }
   }
 }
 .vux-popup-dialog {
