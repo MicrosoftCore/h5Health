@@ -29,11 +29,7 @@
     <confirm v-model="showConfirm" title="提示" @on-confirm="reset">
       <p style="text-align: center;">确认重新填写吗?</p>
     </confirm>
-    <div v-transfer-dom>
-      <popup v-model="showPopup.show" position="top" :show-mask="false">
-        <div class="position-vertical-demo">{{ showPopup.text }}</div>
-      </popup>
-    </div>
+    <popup/>
     <div v-transfer-dom>
       <actionsheet
         v-model="showAction"
@@ -49,12 +45,12 @@
 import {
   Actionsheet,
   Confirm,
-  Popup,
   Tabbar,
   TabbarItem,
   TransferDom,
   XHeader
 } from 'vux'
+import { Popup } from '@/components/vux'
 import { mapActions, mapMutations, mapState } from 'vuex'
 export default {
   directives: {
@@ -89,7 +85,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('action', ['showPopup']),
     ...mapState('question', ['showAssessDot']),
     headerOptions() {
       return {
@@ -113,11 +108,5 @@ export default {
     font-size: 18px;
     color: #999999;
   }
-}
-.position-vertical-demo {
-  padding: 15px;
-  background-color: #ffbe00;
-  text-align: center;
-  color: #000;
 }
 </style>
