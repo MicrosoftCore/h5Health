@@ -8,13 +8,15 @@
       <spinner type="lines"></spinner>
       <span>正在生成评估 {{ text1 }}</span>
     </toast>
+    <popup/>
   </div>
 </template>
 
 <script>
-import { XHeader, Toast, Spinner } from 'vux'
+import { Spinner, Toast, XHeader } from 'vux'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { Model, StylesManager, Survey } from 'survey'
+import { Popup } from '@/components/vux'
 StylesManager.applyTheme('darkblue')
 
 let timerId = 0
@@ -22,10 +24,11 @@ let polling = 60000
 
 export default {
   components: {
+    Popup,
+    Spinner,
     Survey,
-    XHeader,
     Toast,
-    Spinner
+    XHeader
   },
   data() {
     return {
@@ -41,6 +44,7 @@ export default {
     }
   },
   computed: {
+    ...mapState('answer', ['progress']),
     ...mapState('question', ['questions', 'showAssess']),
     jsonIndex() {
       return this.$route.params.jsonIndex
@@ -57,6 +61,9 @@ export default {
       } catch (error) {
         return new Model()
       }
+    },
+    isLastJson() {
+      return this.jsonIndex == this.questions.length - 1
     },
     title() {
       try {
@@ -108,6 +115,27 @@ export default {
       this.save_server()
     })
 
+    this.survey.onCompleting.add((sender, options) => {
+      if (this.isLastJson) {
+        let allowComplete = true
+        let progress = this.progress
+        for (let i in progress) {
+          let part = progress[i]
+          for (let j in part) {
+            let partProgress = part[j]
+            if (partProgress !== 100) allowComplete = false
+          }
+        }
+        if (!allowComplete) {
+          this.set_popup({
+            show: true,
+            text: '您有未答完的题, 请答完后再提交'
+          })
+        }
+        options.allowComplete = allowComplete
+      }
+    })
+
     this.survey.onComplete.add(() => {
       this.set_visible({
         jsonIndex: this.jsonIndex + 1
@@ -117,7 +145,7 @@ export default {
 
       this.set_state(this.jsonIndex)
       this.save_server()
-      if (this.jsonIndex == this.questions.length - 1) {
+      if (this.isLastJson) {
         this.put()
 
         let tick = (i, cb) => {
