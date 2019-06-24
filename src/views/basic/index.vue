@@ -30,6 +30,11 @@
       <p style="text-align: center;">确认重新填写吗?</p>
     </confirm>
     <div v-transfer-dom>
+      <popup v-model="showPopup.show" position="top" :show-mask="false">
+        <div class="position-vertical-demo">{{ showPopup.text }}</div>
+      </popup>
+    </div>
+    <div v-transfer-dom>
       <actionsheet
         v-model="showAction"
         v-bind="sheetOptions"
@@ -44,6 +49,7 @@
 import {
   Actionsheet,
   Confirm,
+  Popup,
   Tabbar,
   TabbarItem,
   TransferDom,
@@ -57,6 +63,7 @@ export default {
   components: {
     Actionsheet,
     Confirm,
+    Popup,
     Tabbar,
     TabbarItem,
     XHeader
@@ -82,6 +89,7 @@ export default {
     }
   },
   computed: {
+    ...mapState('action', ['showPopup']),
     ...mapState('question', ['showAssessDot']),
     headerOptions() {
       return {
@@ -105,5 +113,11 @@ export default {
     font-size: 18px;
     color: #999999;
   }
+}
+.position-vertical-demo {
+  padding: 15px;
+  background-color: #ffbe00;
+  text-align: center;
+  color: #000;
 }
 </style>

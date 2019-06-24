@@ -3,6 +3,20 @@ import AlertModule from 'vux/src/plugins/alert/module'
 
 export default {
   namespaced: true,
+  state: {
+    showPopup: {
+      show: false,
+      text: ''
+    }
+  },
+  mutations: {
+    set_popup (state, payload) {
+      state.showPopup = payload
+      setTimeout(() => {
+        state.showPopup.show = false
+      }, 1500)
+    }
+  },
   actions: {
     reload ({ dispatch }) {
       dispatch('answer/load', null, {
