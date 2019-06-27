@@ -78,7 +78,10 @@ export default {
       let { msg } = await service['cdcqtnaire.add'](payload)
       commit('set_idqtnaire', msg)
     },
-    async put ({ commit, rootState }) {
+    async put ({ commit, dispatch, rootState }) {
+      await dispatch('answer/save_server', null, {
+        root: true
+      })
       await service['cdcqtnaire.update']({
         idqtnaire: rootState.question.idqtnaire
       })

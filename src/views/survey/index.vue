@@ -142,14 +142,13 @@ export default {
       })
 
       this.killTimer()
-
       this.set_state(this.jsonIndex)
-      this.save_server()
+
       if (this.isLastJson) {
         this.put()
 
         let tick = (i, cb) => {
-          setTimeout(function() {
+          setTimeout(() => {
             i++
             cb(i)
             if (i < 100) {
@@ -172,6 +171,7 @@ export default {
           }
         })
       } else {
+        this.save_server()
         this.$router.push({
           name: 'home'
         })
