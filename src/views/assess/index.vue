@@ -6,7 +6,7 @@
           <button-tab-item selected @on-item-click="onItemClick">近期风险</button-tab-item>
           <button-tab-item @on-item-click="onItemClick">终身风险</button-tab-item>
         </button-tab>
-        <div ref="instance" style="width: 100%; height: 250px;"></div>
+        <div ref="wrapper" style="width: 100%; height: 250px;"></div>
         <x-button
           type="primary"
           mini
@@ -59,9 +59,9 @@
         </div>
       </div>
     </div>
-    <div class="assess-empty flex-column__stretch flex-center" v-else>
+    <div class="assess-empty flex-justify__center" v-else>
       <div class="wrapper">
-        <span class="iconfont baogao"></span>
+        <span class="iconfont wujilu"></span>
         <div class="label1">没有任何评估记录</div>
         <div class="label2">请填写问卷评估记录将自动生成</div>
       </div>
@@ -137,7 +137,10 @@ export default {
   },
   methods: {
     onSetOption() {
-      let instance = window.echarts.init(this.$refs.instance)
+      let wrapper = this.$refs.wrapper
+      if (!wrapper) return
+
+      let instance = window.echarts.init(wrapper)
 
       instance.setOption({
         backgroundColor: '#fbfbfb',
@@ -393,7 +396,9 @@ export default {
       this.lifetimeRiskTips = '未知'
     }
 
-    this.onSetOption()
+    this.$nextTick(() => {
+      this.onSetOption()
+    })
   }
 }
 </script>
@@ -473,19 +478,20 @@ export default {
     }
   }
   .assess-empty {
+    padding-top: 40%;
     .wrapper {
       text-align: center;
       .iconfont {
-        font-size: 80px;
-        color: #eaeaea;
+        font-size: 65px;
+        color: #95a0a4;
       }
       .label1,
       .label2 {
         font-size: 15px;
-        color: #848484;
+        color: #95a0a4;
       }
       .label1 {
-        margin-top: 10px;
+        margin-top: 15px;
       }
     }
   }

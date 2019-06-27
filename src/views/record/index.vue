@@ -23,9 +23,9 @@
           </timeline-item>
         </timeline>
       </div>
-      <div class="record-empty flex-center" v-if="!records.length && requested">
+      <div class="record-empty flex-justify__center" v-if="!records.length && requested">
         <div class="wrapper">
-          <span class="iconfont baogao"></span>
+          <span class="iconfont wujilu"></span>
           <div class="label1">没有任何答题记录</div>
           <div class="label2">先去填写问卷吧~</div>
         </div>
@@ -124,19 +124,20 @@ export default {
   }
   .record-empty {
     height: 100%;
+    padding-top: 40%;
     .wrapper {
       text-align: center;
       .iconfont {
-        font-size: 80px;
-        color: #eaeaea;
+        font-size: 65px;
+        color: #95a0a4;
       }
       .label1,
       .label2 {
         font-size: 15px;
-        color: #848484;
+        color: #95a0a4;
       }
       .label1 {
-        margin-top: 10px;
+        margin-top: 15px;
       }
     }
   }
