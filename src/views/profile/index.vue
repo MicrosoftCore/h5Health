@@ -70,9 +70,6 @@ export default {
   &::before {
     left: 50px;
   }
-  .vux-cell-primary p {
-    line-height: 21px;
-  }
   .weui-cell__ft {
     font-size: 16px;
   }

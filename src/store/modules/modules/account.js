@@ -1,5 +1,6 @@
 import service from '@/common/service'
 import { account__snsapi_userinfo, account__userinfo } from '@/common/storage'
+import { EmojiRegExp } from '@/utils/regexp'
 
 export default {
   namespaced: true,
@@ -41,7 +42,10 @@ export default {
           accessToken: snsapi_userinfo.access_token
         }
       })
-      let cdc_wechat = await service['cdcwechat.add'](user_info)
+      let cdc_wechat = await service['cdcwechat.add']({
+        ...user_info,
+        nickname: user_info.nickname ? user_info.nickname.replace(EmojiRegExp, '').trim() : ''
+      })
 
       commit('set_snsapi_userinfo', snsapi_userinfo)
       commit('set_user_info', {
