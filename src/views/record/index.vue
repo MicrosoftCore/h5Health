@@ -129,7 +129,7 @@ export default {
       text-align: center;
       .iconfont {
         font-size: 65px;
-        color: #95a0a4;
+        color: #c4c8c9;
       }
       .label1,
       .label2 {

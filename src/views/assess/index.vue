@@ -61,7 +61,7 @@
     </div>
     <div class="assess-empty flex-justify__center" v-else>
       <div class="wrapper">
-        <span class="iconfont wujilu"></span>
+        <span class="iconfont wupinggu"></span>
         <div class="label1">没有任何评估记录</div>
         <div class="label2">请填写问卷评估记录将自动生成</div>
       </div>
@@ -458,10 +458,10 @@ export default {
                 color: #0187f6;
               }
               .tishi {
-                color: #fb9400;
+                color: #28c06c;
               }
               .jinggao {
-                color: #f43530;
+                color: #fb9400;
               }
             }
             .right {
@@ -482,8 +482,8 @@ export default {
     .wrapper {
       text-align: center;
       .iconfont {
-        font-size: 65px;
-        color: #95a0a4;
+        font-size: 70px;
+        color: #c4c8c9;
       }
       .label1,
       .label2 {

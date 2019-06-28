@@ -86,7 +86,7 @@
       <popup v-model="showPopup" position="bottom" height="80%" is-transparent>
         <div class="notice-wrapper">
           <div class="notice-wrapper__content" v-html="htmlString"></div>
-          <x-button type="primary" plain @click.native="showPopup = false">关闭</x-button>
+          <x-button type="primary" @click.native="showPopup = false">我知道了</x-button>
         </div>
       </popup>
     </div>
