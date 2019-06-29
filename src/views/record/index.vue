@@ -26,8 +26,9 @@
       <div class="record-empty flex-justify__center" v-if="!records.length && requested">
         <div class="wrapper">
           <span class="iconfont wujilu"></span>
-          <div class="label1">没有任何答题记录</div>
-          <div class="label2">先去填写问卷吧~</div>
+          <div class="label1">如果您还没有答题, 请先答问卷, 评估结果会自动显示</div>
+          <div class="label2">如果您修改了答案没有提交, 请先提交</div>
+          <div class="label2">您可以去 "我" 点击答题记录查看对应的评估结果</div>
         </div>
       </div>
     </div>
@@ -124,8 +125,8 @@ export default {
   }
   .record-empty {
     height: 100%;
-    padding-top: 40%;
     .wrapper {
+      margin-top: 40%;
       text-align: center;
       .iconfont {
         font-size: 65px;
@@ -133,11 +134,12 @@ export default {
       }
       .label1,
       .label2 {
-        font-size: 15px;
+        line-height: 20px;
+        font-size: 13px;
         color: #95a0a4;
       }
       .label1 {
-        margin-top: 15px;
+        margin-top: 20px;
       }
     }
   }

@@ -121,12 +121,14 @@ export default {
 
       if (this.selected === 0) {
         let value1 = fyrsRisk - fyrsLowrisk
+        value1 = value1 > 0 ? value1 : 0
         return {
           value1,
           value2: fyrsHighrisk - fyrsLowrisk - value1
         }
       } else {
         let value1 = lifetimeRisk - lifetimeLowrisk
+        value1 = value1 > 0 ? value1 : 0
         return {
           value1,
           value2: lifetimeHighrisk - lifetimeLowrisk - value1
@@ -481,8 +483,8 @@ export default {
     }
   }
   .assess-empty {
-    padding-top: 40%;
     .wrapper {
+      margin-top: 40%;
       text-align: center;
       .iconfont {
         font-size: 70px;
@@ -494,7 +496,7 @@ export default {
         color: #95a0a4;
       }
       .label1 {
-        margin-top: 15px;
+        margin-top: 20px;
       }
     }
   }
