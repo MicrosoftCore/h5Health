@@ -3,6 +3,7 @@ import {
   question__show_assess,
   question__show_assess_dot,
   question__surveyjs_idqtnaire,
+  question__surveyjs_idqtnaireFinished,
   question__surveyjs_loadvisible
 } from '@/common/storage'
 
@@ -10,6 +11,7 @@ export default {
   namespaced: true,
   state: {
     idqtnaire: null,
+    idqtnaireFinished: [],
     questions: [],
     showAssess: false,
     showAssessDot: false,
@@ -48,6 +50,14 @@ export default {
     get_idqtnaire (state) {
       state.idqtnaire = window.localStorage.getItem(question__surveyjs_idqtnaire)
     },
+    set_idqtnaire_finished (state, payload) {
+      state.idqtnaireFinished.push(payload)
+      window.localStorage.setItem(question__surveyjs_idqtnaireFinished, JSON.stringify(state.idqtnaireFinished))
+    },
+    get_idqtnaire_finished (state) {
+      let idqtnaireFinished = window.localStorage.getItem(question__surveyjs_idqtnaireFinished) || ''
+      state.idqtnaireFinished = idqtnaireFinished ? JSON.parse(idqtnaireFinished) : []
+    },
     set_visible (state, { jsonIndex, title, type = '', visible = true }) {
       let jsonGroup = state.visible[jsonIndex]
       if (jsonGroup && title && !jsonGroup.includes(title)) {
@@ -78,13 +88,14 @@ export default {
       let { msg } = await service['cdcqtnaire.add'](payload)
       commit('set_idqtnaire', msg)
     },
-    async put ({ commit, dispatch, rootState }) {
+    async put ({ commit, dispatch, state }) {
       await dispatch('answer/save_server', null, {
         root: true
       })
       await service['cdcqtnaire.update']({
-        idqtnaire: rootState.question.idqtnaire
+        idqtnaire: state.idqtnaire
       })
+      commit('set_idqtnaire_finished', state.idqtnaire)
       commit('set_assess')
       commit('set_assess_dot')
     },
@@ -92,6 +103,7 @@ export default {
       commit('get_assess')
       commit('get_assess_dot')
       commit('get_idqtnaire')
+      commit('get_idqtnaire_finished')
       commit('get_visible')
     }
   }

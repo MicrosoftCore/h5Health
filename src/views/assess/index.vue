@@ -94,10 +94,11 @@ export default {
     }
   },
   computed: {
-    ...mapState('question', ['idqtnaire', 'showAssess']),
+    ...mapState('question', ['idqtnaireFinished', 'showAssess']),
     id() {
       let { idqtnaire = '' } = this.$route.query
-      return idqtnaire || this.idqtnaire
+      let idqtnaireFinished = this.idqtnaireFinished
+      return idqtnaire || idqtnaireFinished[idqtnaireFinished.length - 1]
     },
     riskColor() {
       return this.selected === 0 ? this.fyrsRiskColor : this.lifetimeRiskColor
@@ -111,22 +112,24 @@ export default {
     riskValue() {
       let {
         fyrsLowrisk,
-        lifetimeLowrisk
-        // fyrsHighrisk,
-        // lifetimeHighrisk
+        fyrsHighrisk,
+        lifetimeLowrisk,
+        lifetimeHighrisk
       } = this.cdcthreshold
 
       let { fyrsRisk, lifetimeRisk } = this.cdcqtnaire
 
       if (this.selected === 0) {
+        let value1 = fyrsRisk - fyrsLowrisk
         return {
-          value1: fyrsRisk,
-          value2: fyrsLowrisk
+          value1,
+          value2: fyrsHighrisk - fyrsLowrisk - value1
         }
       } else {
+        let value1 = lifetimeRisk - lifetimeLowrisk
         return {
-          value1: lifetimeRisk,
-          value2: lifetimeLowrisk
+          value1,
+          value2: lifetimeHighrisk - lifetimeLowrisk - value1
         }
       }
     },
@@ -354,10 +357,10 @@ export default {
     })
 
     let {
-      fyrsLowrisk,
-      fyrsHighrisk,
-      lifetimeLowrisk,
-      lifetimeHighrisk
+      fyrsLowthreshold,
+      fyrsHighthreshold,
+      lifetimeLowthreshold,
+      lifetimeHighthreshold
     } = cdcthreshold
 
     let { fyrsRisk, lifetimeRisk } = cdcqtnaire
@@ -365,13 +368,13 @@ export default {
     this.cdcthreshold = cdcthreshold
     this.cdcqtnaire = cdcqtnaire
 
-    if (fyrsRisk < fyrsLowrisk) {
+    if (fyrsRisk < fyrsLowthreshold) {
       this.fyrsRiskColor = '#39BF68'
       this.fyrsRiskTips = '低危'
-    } else if (fyrsRisk > fyrsLowrisk && fyrsRisk < fyrsHighrisk) {
+    } else if (fyrsRisk > fyrsLowthreshold && fyrsRisk < fyrsHighthreshold) {
       this.fyrsRiskColor = '#FFBE00'
       this.fyrsRiskTips = '中危'
-    } else if (fyrsRisk > fyrsHighrisk) {
+    } else if (fyrsRisk > fyrsHighthreshold) {
       this.fyrsRiskColor = '#F43530'
       this.fyrsRiskTips = '高危'
     } else {
@@ -379,16 +382,16 @@ export default {
       this.fyrsRiskTips = '未知'
     }
 
-    if (lifetimeRisk < lifetimeLowrisk) {
+    if (lifetimeRisk < lifetimeLowthreshold) {
       this.lifetimeRiskColor = '#39BF68'
       this.lifetimeRiskTips = '低危'
     } else if (
-      lifetimeRisk > lifetimeLowrisk &&
-      lifetimeRisk < lifetimeHighrisk
+      lifetimeRisk > lifetimeLowthreshold &&
+      lifetimeRisk < lifetimeHighthreshold
     ) {
       this.lifetimeRiskColor = '#FFBE00'
       this.lifetimeRiskTips = '中危'
-    } else if (lifetimeRisk > lifetimeHighrisk) {
+    } else if (lifetimeRisk > lifetimeHighthreshold) {
       this.lifetimeRiskColor = '#F43530'
       this.lifetimeRiskTips = '高危'
     } else {
