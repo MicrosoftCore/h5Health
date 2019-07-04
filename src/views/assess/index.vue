@@ -38,7 +38,9 @@
                   <span class="iconfont tishi"></span>
                 </div>
                 <div class="right">
-                  <span>如果您调整您的生活习惯, 风险值将会降低 {{ cdcqtnaire.reducerisk || 0 }}</span>
+                  <span>通过改变不良行为生活方式, 发病风险可降低&nbsp;</span>
+                  <span v-if="selected === 0">{{ cdcqtnaire.fyrsreducerisk || 0 }}</span>
+                  <span v-if="selected === 1">{{ cdcqtnaire.lifetimereducerisk || 0 }}</span>
                 </div>
               </div>
             </cell-box>
@@ -53,7 +55,7 @@
               </div>
             </cell-box>
             <cell-box :border-intent="false">
-              <div class="flex-center button" @click="onDetail">查看风险</div>
+              <div class="flex-center button" @click="onDetail">查看生活习惯评价</div>
             </cell-box>
           </group>
         </div>
@@ -62,8 +64,9 @@
     <div class="assess-empty flex-justify__center" v-else>
       <div class="wrapper">
         <span class="iconfont wupinggu"></span>
-        <div class="label1">没有任何评估记录</div>
-        <div class="label2">请填写问卷评估记录将自动生成</div>
+        <div class="label1">如果您还没有答题, 请先答问卷, 评估结果会自动显示</div>
+        <div class="label2">如果您修改了答案没有提交, 请先提交</div>
+        <div class="label2">您可以去 "我" 点击答题记录查看对应的评估结果</div>
       </div>
     </div>
   </div>
@@ -370,13 +373,13 @@ export default {
     this.cdcthreshold = cdcthreshold
     this.cdcqtnaire = cdcqtnaire
 
-    if (fyrsRisk < fyrsLowthreshold) {
+    if (fyrsRisk <= fyrsLowthreshold) {
       this.fyrsRiskColor = '#39BF68'
       this.fyrsRiskTips = '低危'
     } else if (fyrsRisk > fyrsLowthreshold && fyrsRisk < fyrsHighthreshold) {
       this.fyrsRiskColor = '#FFBE00'
       this.fyrsRiskTips = '中危'
-    } else if (fyrsRisk > fyrsHighthreshold) {
+    } else if (fyrsRisk >= fyrsHighthreshold) {
       this.fyrsRiskColor = '#F43530'
       this.fyrsRiskTips = '高危'
     } else {
@@ -384,7 +387,7 @@ export default {
       this.fyrsRiskTips = '未知'
     }
 
-    if (lifetimeRisk < lifetimeLowthreshold) {
+    if (lifetimeRisk <= lifetimeLowthreshold) {
       this.lifetimeRiskColor = '#39BF68'
       this.lifetimeRiskTips = '低危'
     } else if (
@@ -393,7 +396,7 @@ export default {
     ) {
       this.lifetimeRiskColor = '#FFBE00'
       this.lifetimeRiskTips = '中危'
-    } else if (lifetimeRisk > lifetimeHighthreshold) {
+    } else if (lifetimeRisk >= lifetimeHighthreshold) {
       this.lifetimeRiskColor = '#F43530'
       this.lifetimeRiskTips = '高危'
     } else {
@@ -492,7 +495,8 @@ export default {
       }
       .label1,
       .label2 {
-        font-size: 15px;
+        line-height: 20px;
+        font-size: 13px;
         color: #95a0a4;
       }
       .label1 {

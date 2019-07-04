@@ -17,7 +17,7 @@
                 <div class="top flex-align__center">
                   <span class="span1">问卷版本号 {{ item.qtnaireversion }}</span>
                 </div>
-                <div class="bottom">答题时间: {{ item.fillingTime }}</div>
+                <div class="bottom">答题时间: {{ item.fillingTime.slice(0, 10) }}</div>
               </div>
             </div>
           </timeline-item>
@@ -26,9 +26,8 @@
       <div class="record-empty flex-justify__center" v-if="!records.length && requested">
         <div class="wrapper">
           <span class="iconfont wujilu"></span>
-          <div class="label1">如果您还没有答题, 请先答问卷, 评估结果会自动显示</div>
-          <div class="label2">如果您修改了答案没有提交, 请先提交</div>
-          <div class="label2">您可以去 "我" 点击答题记录查看对应的评估结果</div>
+          <div class="label1">没有任何答题记录</div>
+          <div class="label2">先去填写问卷吧~</div>
         </div>
       </div>
     </div>
