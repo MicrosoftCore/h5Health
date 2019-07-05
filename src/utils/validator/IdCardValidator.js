@@ -1,13 +1,6 @@
-/*
- * ID number verification v1.0.9
- * 中国身份证号验证(内地)
- * 作者 xxf1991-
- * ps:加微信请备注原因。 微信号 xxf1991-
- */
 import moment from 'moment'
 
 class IdValidate {
-
   constructor (areaNumber) {
     this.areaNumber = areaNumber
     this.errorMessage = null
@@ -37,7 +30,7 @@ class IdValidate {
   }
 
   basicFormat (idCard) {
-    if (typeof (idCard) !== 'string') {
+    if (typeof idCard !== 'string') {
       this.errorMessage = '请输入一个字符串格式的身份证号'
       return false
     }
@@ -158,16 +151,16 @@ class IdValidate {
     let sum = 0
     let arr = idCard.split('')
     for (let j = 0; j < arr.length - 1; j++) {
-      sum += (parseInt(arr[j], 10) * posWeight[18 - j])
+      sum += parseInt(arr[j], 10) * posWeight[18 - j]
     }
 
-    let checkBit = 12 - (sum % 11)
+    let checkBit = 12 - sum % 11
     if (checkBit === 10) {
       checkBit = 'X'
     } else if (checkBit > 10) {
       checkBit = checkBit % 11
     }
-    checkBit = (typeof checkBit === 'number' ? checkBit.toString() : checkBit)
+    checkBit = typeof checkBit === 'number' ? checkBit.toString() : checkBit
 
     if (checkBit !== idCard.slice(-1)) {
       this.errorMessage = '校检码错误'
@@ -196,4 +189,3 @@ export default IdValidate
 
 const validator = new IdValidate()
 export { validator }
-

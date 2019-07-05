@@ -51,8 +51,8 @@ export default {
       let item = window.localStorage.getItem(answer__surveyjs_loadstate) || ''
       let storage = (item && JSON.parse(item)[jsonIndex]) || {}
 
-      state.model.currentPageNo = pageIndex - 1
       if (storage.data) state.model.data = storage.data
+      state.model.currentPageNo = pageIndex - 1
     },
     set_state ({ state }, jsonIndex) {
       let item = window.localStorage.getItem(answer__surveyjs_loadstate) || ''
