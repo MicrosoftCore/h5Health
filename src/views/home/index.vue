@@ -146,6 +146,7 @@ export default {
           return (
             item.jsonIndex == jsonIndex &&
             item.name == card.name &&
+            item.options.value &&
             item.isCurrentPageHasErrors
           )
         }).length > 0

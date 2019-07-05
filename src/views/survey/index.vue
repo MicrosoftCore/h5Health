@@ -207,11 +207,20 @@ export default {
     })
 
     this.survey.onPageVisibleChanged.add((sender, options) => {
+      let jsonIndex = this.jsonIndex
+      let visible = options.visible
+      let title = options.page.title
+      let name = options.page.name
       this.set_visible({
-        jsonIndex: this.jsonIndex,
-        title: options.page.title,
+        jsonIndex,
+        title,
         type: 'onPageVisibleChanged',
-        visible: options.visible
+        visible
+      })
+      this.set_progress({
+        jsonIndex,
+        name,
+        visible
       })
     })
 

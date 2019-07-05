@@ -13,16 +13,20 @@ export default {
     set_model (state, payload) {
       state.model = payload
     },
-    set_progress (state, { jsonIndex, name }) {
+    set_progress (state, payload) {
+      let { jsonIndex, name, visible } = payload
+
       let data = state.model.data
-
       let questions = state.model.getPageByName(name).questions.filter(item => item.visible)
-
       let answered = questions.filter(question => data[question.name] || data[question.valueName])
 
-      state.progress[jsonIndex] = {
-        ...state.progress[jsonIndex],
-        [name]: Math.round(answered.length / questions.length * 10000) / 100 || 0
+      if (visible || visible === undefined) {
+        state.progress[jsonIndex] = {
+          ...state.progress[jsonIndex],
+          [name]: Math.round(answered.length / questions.length * 10000) / 100 || 0
+        }
+      } else {
+        delete state.progress[jsonIndex][name]
       }
 
       window.localStorage.setItem(answer__progress, JSON.stringify(state.progress))
