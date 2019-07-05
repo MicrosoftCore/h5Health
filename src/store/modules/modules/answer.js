@@ -1,12 +1,13 @@
 import service from '@/common/service'
-import { answer__progress, answer__surveyjs_loadstate } from '@/common/storage'
+import { answer__progress, answer__validate, answer__surveyjs_loadstate } from '@/common/storage'
 import { Model } from 'survey'
 
 export default {
   namespaced: true,
   state: {
     model: new Model(),
-    progress: {}
+    progress: {},
+    validate: {}
   },
   mutations: {
     set_model (state, payload) {
@@ -29,6 +30,16 @@ export default {
     get_progress (state) {
       let item = window.localStorage.getItem(answer__progress) || ''
       state.progress = (item && JSON.parse(item)) || {}
+    },
+    set_validate (state, payload) {
+      let { options } = payload
+      state.validate[options.name] = payload
+
+      window.localStorage.setItem(answer__validate, JSON.stringify(state.validate))
+    },
+    get_validate (state) {
+      let item = window.localStorage.getItem(answer__validate) || ''
+      state.validate = (item && JSON.parse(item)) || {}
     }
   },
   actions: {
@@ -63,6 +74,7 @@ export default {
     },
     load ({ commit }) {
       commit('get_progress')
+      commit('get_validate')
     }
   }
 }

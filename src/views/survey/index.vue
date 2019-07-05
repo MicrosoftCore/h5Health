@@ -44,7 +44,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('answer', ['progress']),
+    ...mapState('answer', ['progress', 'validate']),
     ...mapState('question', ['questions', 'showAssess']),
     jsonIndex() {
       return this.$route.params.jsonIndex
@@ -77,7 +77,7 @@ export default {
     ...mapActions('answer', ['get_state', 'set_state', 'save_server']),
     ...mapActions('question', ['get', 'put']),
     ...mapMutations('action', ['set_popup']),
-    ...mapMutations('answer', ['set_model', 'set_progress']),
+    ...mapMutations('answer', ['set_model', 'set_progress', 'set_validate']),
     ...mapMutations('question', ['set_visible']),
     killTimer() {
       clearInterval(timerId)
@@ -97,9 +97,17 @@ export default {
 
     this.survey.onValueChanged.add((sender, options) => {
       let name = options.question.page.name
+      let jsonIndex = this.jsonIndex
+      let isCurrentPageHasErrors = sender.isCurrentPageHasErrors
       this.set_state(this.jsonIndex)
       this.set_progress({
-        jsonIndex: this.jsonIndex,
+        jsonIndex,
+        name
+      })
+      this.set_validate({
+        isCurrentPageHasErrors,
+        jsonIndex,
+        options,
         name
       })
     })
@@ -119,6 +127,7 @@ export default {
       if (this.isLastJson) {
         let allowComplete = true
         let progress = this.progress
+
         for (let i in progress) {
           let part = progress[i]
           for (let j in part) {
@@ -126,12 +135,25 @@ export default {
             if (partProgress !== 100) allowComplete = false
           }
         }
+
         if (!allowComplete) {
           this.set_popup({
             show: true,
-            text: '您有未答完的题, 请答完后再提交'
+            text: '您有未答完的题 , 请答完后再提交'
           })
+        } else {
+          let validate = Object.values(this.validate).filter(
+            item => item.isCurrentPageHasErrors
+          )
+          if (validate.length > 0) {
+            allowComplete = false
+            this.set_popup({
+              show: true,
+              text: '答题有误 , 请检查答案后提交'
+            })
+          }
         }
+
         options.allowComplete = allowComplete
       }
     })

@@ -12,20 +12,31 @@
             <div class="title">{{ json.title }} - {{ card.title[json.locale] }}</div>
             <div>
               <span class="status">
-                <span class="status1" v-if="onProgress(card, jsonIndex) === 0">
-                  <span class="iconfont wenjuan"></span>
-                  <span>未答题</span>
+                <span v-if="onValidate(card, jsonIndex)">
+                  <span class="status4">
+                    <span class="iconfont cuowu"></span>
+                    <span>答题有误, 请检查</span>
+                  </span>
                 </span>
-                <span
-                  class="status2"
-                  v-if="onProgress(card, jsonIndex) > 0 && onProgress(card, jsonIndex) < 100"
-                >
-                  <span class="iconfont zhuangtai"></span>
-                  <span>进行中</span>
-                </span>
-                <span class="status3" v-if="onProgress(card, jsonIndex) === 100">
-                  <span class="iconfont chenggong"></span>
-                  <span>已答完</span>
+                <span v-else>
+                  <span v-if="onProgress(card, jsonIndex) === 0">
+                    <span class="status1">
+                      <span class="iconfont wenjuan"></span>
+                      <span>未答题</span>
+                    </span>
+                  </span>
+                  <span v-if="onProgress(card, jsonIndex) > 0 && onProgress(card, jsonIndex) < 100">
+                    <span class="status2">
+                      <span class="iconfont zhuangtai"></span>
+                      <span>进行中</span>
+                    </span>
+                  </span>
+                  <span v-if="onProgress(card, jsonIndex) === 100">
+                    <span class="status3">
+                      <span class="iconfont chenggong"></span>
+                      <span>已答完</span>
+                    </span>
+                  </span>
                 </span>
               </span>
               <!-- <span class="mark">健康度: 100分</span> -->
@@ -76,17 +87,9 @@ export default {
     UserInfo
   },
   computed: {
-    ...mapState('account', {
-      userinfo: state => state.userinfo
-    }),
-    ...mapState('answer', {
-      progress: state => state.progress
-    }),
-    ...mapState('question', {
-      questions: state => state.questions,
-      showAssess: state => state.showAssess,
-      visible: state => state.visible
-    }),
+    ...mapState('account', ['userinfo']),
+    ...mapState('answer', ['progress', 'validate']),
+    ...mapState('question', ['questions', 'showAssess', 'visible']),
     questionsJson() {
       try {
         return this.questions.map(item => ({
@@ -96,6 +99,9 @@ export default {
       } catch (error) {
         return []
       }
+    },
+    validateJson() {
+      return Object.values(this.validate)
     }
   },
   methods: {
@@ -133,6 +139,17 @@ export default {
       } catch (error) {
         return 0
       }
+    },
+    onValidate(card, jsonIndex) {
+      return (
+        this.validateJson.filter(item => {
+          return (
+            item.jsonIndex == jsonIndex &&
+            item.name == card.name &&
+            item.isCurrentPageHasErrors
+          )
+        }).length > 0
+      )
     }
   },
   async created() {
@@ -168,6 +185,9 @@ export default {
         }
         .status3 {
           color: #09bb07;
+        }
+        .status4 {
+          color: #e65c65;
         }
       }
       .mark {
