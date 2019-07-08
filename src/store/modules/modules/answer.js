@@ -36,8 +36,8 @@ export default {
       state.progress = (item && JSON.parse(item)) || {}
     },
     set_validate (state, payload) {
-      let { options } = payload
-      state.validate[options.name] = payload
+      let { jsonIndex, options } = payload
+      state.validate[jsonIndex] = options
 
       window.localStorage.setItem(answer__validate, JSON.stringify(state.validate))
     },

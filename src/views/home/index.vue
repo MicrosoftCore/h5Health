@@ -99,9 +99,6 @@ export default {
       } catch (error) {
         return []
       }
-    },
-    validateJson() {
-      return Object.values(this.validate)
     }
   },
   methods: {
@@ -141,16 +138,17 @@ export default {
       }
     },
     onValidate(card, jsonIndex) {
-      return (
-        this.validateJson.filter(item => {
-          return (
-            item.jsonIndex == jsonIndex &&
-            item.name == card.name &&
-            item.options.value &&
-            item.isCurrentPageHasErrors
-          )
-        }).length > 0
-      )
+      try {
+        return (
+          this.validate[jsonIndex].errors.filter(error =>
+            card.elements.find(
+              element => element.name === error.errorOwner.name
+            )
+          ).length > 0
+        )
+      } catch (error) {
+        return false
+      }
     }
   },
   async created() {

@@ -36,6 +36,7 @@ export default {
       text1: '',
       survey: new Model(),
       toastOptions: {
+        time: 3000,
         type: 'text',
         width: '13em',
         position: 'middle',
@@ -85,8 +86,10 @@ export default {
   },
   async created() {
     if (!this.questions.length) await this.get()
+
     this.survey = new Model(
       Object.assign(this.questionjson, {
+        checkErrorsMode: 'onValueChanged',
         clearInvisibleValues: 'none',
         sendResultOnPageNext: true,
         showProgressBar: 'top'
@@ -98,24 +101,47 @@ export default {
     this.survey.onValueChanged.add((sender, options) => {
       let name = options.question.page.name
       let jsonIndex = this.jsonIndex
-      let isCurrentPageHasErrors = sender.isCurrentPageHasErrors
-      this.set_state(this.jsonIndex)
+
+      this.set_state(jsonIndex)
       this.set_progress({
         jsonIndex,
         name
       })
-      this.set_validate({
-        isCurrentPageHasErrors,
-        jsonIndex,
-        options,
-        name
-      })
+
+      sender.fireValidatedErrorsOnCurrentPage()
     })
 
     this.survey.onCurrentPageChanged.add(sender => {
       this.set_visible({
         jsonIndex: this.jsonIndex,
         title: sender.currentPage.title
+      })
+    })
+
+    this.survey.onValidatedErrorsOnCurrentPage.add((sender, options) => {
+      let jsonIndex = this.jsonIndex
+
+      this.set_validate({
+        jsonIndex,
+        options
+      })
+    })
+
+    this.survey.onPageVisibleChanged.add((sender, options) => {
+      let jsonIndex = this.jsonIndex
+      let visible = options.visible
+      let title = options.page.title
+      let name = options.page.name
+      this.set_visible({
+        jsonIndex,
+        title,
+        type: 'onPageVisibleChanged',
+        visible
+      })
+      this.set_progress({
+        jsonIndex,
+        name,
+        visible
       })
     })
 
@@ -142,10 +168,10 @@ export default {
             text: '您有未答完的题 , 请答完后再提交'
           })
         } else {
-          let validate = Object.values(this.validate).filter(
-            item => item.isCurrentPageHasErrors
+          let validate = Object.values(this.validate).some(
+            item => item.errors.length > 0
           )
-          if (validate.length > 0) {
+          if (validate) {
             allowComplete = false
             this.set_popup({
               show: true,
@@ -167,7 +193,7 @@ export default {
       this.set_state(this.jsonIndex)
 
       if (this.isLastJson) {
-        this.put()
+        this.put(this.$router)
 
         let tick = (i, cb) => {
           setTimeout(() => {
@@ -176,21 +202,12 @@ export default {
             if (i < 100) {
               tick(i, cb)
             }
-          }, 10)
+          }, 20)
         }
 
         this.show1 = true
         tick(0, percent => {
           this.text1 = `${percent}%`
-          if (percent === 100) {
-            setTimeout(() => {
-              this.show1 = false
-              this.$router.push({
-                name: 'assess'
-              })
-            }, 1000)
-            return
-          }
         })
       } else {
         this.save_server()
@@ -204,24 +221,6 @@ export default {
           })
         }
       }
-    })
-
-    this.survey.onPageVisibleChanged.add((sender, options) => {
-      let jsonIndex = this.jsonIndex
-      let visible = options.visible
-      let title = options.page.title
-      let name = options.page.name
-      this.set_visible({
-        jsonIndex,
-        title,
-        type: 'onPageVisibleChanged',
-        visible
-      })
-      this.set_progress({
-        jsonIndex,
-        name,
-        visible
-      })
     })
 
     this.get_state({

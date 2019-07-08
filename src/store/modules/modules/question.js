@@ -69,7 +69,7 @@ export default {
         if (visible) {
           title && state.visible[jsonIndex].push(title)
         } else {
-          var lists = state.visible[jsonIndex]
+          let lists = state.visible[jsonIndex]
           state.visible[jsonIndex] = lists.filter(item => item && item !== title)
         }
       }
@@ -88,7 +88,7 @@ export default {
       let { msg } = await service['cdcqtnaire.add'](payload)
       commit('set_idqtnaire', msg)
     },
-    async put ({ commit, dispatch, state }) {
+    async put ({ commit, dispatch, state }, payload) {
       await dispatch('answer/save_server', null, {
         root: true
       })
@@ -98,6 +98,9 @@ export default {
       commit('set_idqtnaire_finished', state.idqtnaire)
       commit('set_assess')
       commit('set_assess_dot')
+      payload.push({
+        name: 'assess'
+      })
     },
     load ({ commit }) {
       commit('get_assess')
