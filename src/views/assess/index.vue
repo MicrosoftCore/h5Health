@@ -59,6 +59,28 @@
             </cell-box>
           </group>
         </div>
+        <div class="assess-wrapper__card">
+          <div class="wrapper1">
+            <div class="wrapper-item">
+              <div class="left">
+                <span class="iconfont tongji"></span>
+              </div>
+              <div class="right">据世界卫生组织估计, 2018年全球因为癌症而离世的人数达960万, 而高达30%到50%的癌症可以预防。</div>
+            </div>
+            <div class="wrapper-item">
+              <div class="left">
+                <span class="iconfont dengpao"></span>
+              </div>
+              <div class="right">本风险评估结果主要参考美国国家癌症研究所及英国癌症研究中心等多个权威机构发布的癌症风险评估模型。</div>
+            </div>
+            <div class="wrapper-item">
+              <div class="left">
+                <span class="iconfont women"></span>
+              </div>
+              <div class="right">我们致力于发展更适合我国人群特点的评估模型, 并在将来给出更加精准的评估结果。</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="assess-empty flex-justify__center" v-else>
@@ -437,8 +459,8 @@ export default {
       margin: 20px 20px;
       padding: 1px 10px 1px 20px;
       border-radius: 3px;
-      box-shadow: 0px -3px 15px #f0f0f0, -3px 0px 15px #f0f0f0,
-        3px 0px 15px #f0f0f0, 0px 3px 15px #f0f0f0;
+      box-shadow: 0px -1px 20px #f5f5f5, -1px 0px 20px #f5f5f5,
+        3px 0px 20px #f5f5f5, 0px 3px 20px #f5f5f5;
       background-color: #ffffff;
       /deep/.weui-cells__title {
         margin: 10px 0;
@@ -451,6 +473,7 @@ export default {
           border-bottom: none;
         }
         .weui-cell {
+          padding-left: 8px;
           font-size: 15px;
           color: #333333;
           &:not(:last-child)::before {
@@ -460,7 +483,7 @@ export default {
             display: flex;
             align-items: center;
             .left {
-              margin-right: 15px;
+              margin-right: 22px;
               font-size: 22px;
               .shandian {
                 color: #0187f6;
@@ -474,12 +497,33 @@ export default {
             }
             .right {
               flex: 1;
+              line-height: 20px;
               text-align: justify;
             }
           }
           .button {
             width: 100%;
             color: #38bf69;
+          }
+        }
+      }
+      .wrapper1 {
+        padding: 15px 10px 10px;
+        .wrapper-item {
+          display: flex;
+          align-items: flex-start;
+          margin: 10px 0;
+          .left {
+            width: 43px;
+            font-size: 20px;
+            color: #0bce8c;
+          }
+          .right {
+            flex: 1;
+            line-height: 20px;
+            font-size: 14px;
+            text-align: justify;
+            color: #7c7c7c;
           }
         }
       }
