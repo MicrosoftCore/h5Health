@@ -52,7 +52,11 @@
           v-model="form.tel1"
         ></x-input>
       </group>
-      <group title="填写快递地址" label-width="6em" label-margin-right="2em" label-align="left">
+      <group label-width="6em" label-margin-right="2em" label-align="left">
+        <group-title slot="title">
+          <span>填写快递地址</span>
+          <span style="color:red">（请包含收件人姓名）</span>
+        </group-title>
         <x-input ref="name" title="单位全称" placeholder="请输入单位全称" required v-model="form.name"></x-input>
         <x-address
           ref="region"
@@ -104,6 +108,7 @@ import {
   CheckIcon,
   ChinaAddressV4Data,
   Group,
+  GroupTitle,
   Popup,
   TransferDom,
   XAddress,
@@ -124,6 +129,7 @@ export default {
     Cell,
     CheckIcon,
     Group,
+    GroupTitle,
     Popup,
     XAddress,
     XButton,
