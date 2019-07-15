@@ -21,44 +21,44 @@ export default {
     set (state, payload) {
       state.questions = payload
     },
-    set_assess (state, payload = true) {
+    m4sa (state, payload = true) {
       state.showAssess = payload
       window.localStorage.setItem(question__show_assess, payload)
     },
-    get_assess (state) {
+    m4ga (state) {
       let showAssess = false
       let storage = window.localStorage.getItem(question__show_assess)
       if (storage === 'true') showAssess = true
       if (storage === 'false') showAssess = false
       state.showAssess = showAssess
     },
-    set_assess_dot (state, payload = true) {
+    m4sad (state, payload = true) {
       state.showAssessDot = payload
       window.localStorage.setItem(question__show_assess_dot, payload)
     },
-    get_assess_dot (state) {
+    m4gad (state) {
       let showAssessDot = false
       let storage = window.localStorage.getItem(question__show_assess_dot)
       if (storage === 'true') showAssessDot = true
       if (storage === 'false') showAssessDot = false
       state.showAssessDot = showAssessDot
     },
-    set_idqtnaire (state, payload) {
+    m4si (state, payload) {
       state.idqtnaire = payload
       window.localStorage.setItem(question__surveyjs_idqtnaire, payload)
     },
-    get_idqtnaire (state) {
+    m4gi (state) {
       state.idqtnaire = window.localStorage.getItem(question__surveyjs_idqtnaire)
     },
-    set_idqtnaire_finished (state, payload) {
+    m4sif (state, payload) {
       state.idqtnaireFinished.push(payload)
       window.localStorage.setItem(question__surveyjs_idqtnaireFinished, JSON.stringify(state.idqtnaireFinished))
     },
-    get_idqtnaire_finished (state) {
+    m4gif (state) {
       let idqtnaireFinished = window.localStorage.getItem(question__surveyjs_idqtnaireFinished) || ''
       state.idqtnaireFinished = idqtnaireFinished ? JSON.parse(idqtnaireFinished) : []
     },
-    set_visible (state, { jsonIndex, title, type = '', visible = true }) {
+    m4sv (state, { jsonIndex, title, type = '', visible = true }) {
       let jsonGroup = state.visible[jsonIndex]
       if (jsonGroup && title && !jsonGroup.includes(title)) {
         state.visible[jsonIndex].push(title)
@@ -75,7 +75,7 @@ export default {
       }
       window.localStorage.setItem(question__surveyjs_loadvisible, JSON.stringify(state.visible))
     },
-    get_visible (state) {
+    m4gv (state) {
       let visible = window.localStorage.getItem(question__surveyjs_loadvisible) || ''
       state.visible = visible ? JSON.parse(visible) : {}
     }
@@ -86,28 +86,28 @@ export default {
     },
     async post ({ commit }, payload) {
       let { msg } = await service['cdcqtnaire.add'](payload)
-      commit('set_idqtnaire', msg)
+      commit('m4si', msg)
     },
     async put ({ commit, dispatch, state }, payload) {
-      await dispatch('answer/save_server', null, {
+      await dispatch('answer/m3ssr', null, {
         root: true
       })
       await service['cdcqtnaire.update']({
         idqtnaire: state.idqtnaire
       })
-      commit('set_idqtnaire_finished', state.idqtnaire)
-      commit('set_assess')
-      commit('set_assess_dot')
+      commit('m4sif', state.idqtnaire)
+      commit('m4sa')
+      commit('m4sad')
       payload.push({
         name: 'assess'
       })
     },
     load ({ commit }) {
-      commit('get_assess')
-      commit('get_assess_dot')
-      commit('get_idqtnaire')
-      commit('get_idqtnaire_finished')
-      commit('get_visible')
+      commit('m4ga')
+      commit('m4gad')
+      commit('m4gi')
+      commit('m4gif')
+      commit('m4gv')
     }
   }
 }

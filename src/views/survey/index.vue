@@ -75,11 +75,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions('answer', ['get_state', 'set_state', 'save_server']),
+    ...mapActions('answer', ['m3gs', 'm3ss', 'm3ssr']),
     ...mapActions('question', ['get', 'put']),
-    ...mapMutations('action', ['set_popup']),
-    ...mapMutations('answer', ['set_model', 'set_progress', 'set_validate']),
-    ...mapMutations('question', ['set_visible']),
+    ...mapMutations('action', ['m2sp']),
+    ...mapMutations('answer', ['m3sm', 'm3sp', 'm3sv']),
+    ...mapMutations('question', ['m4sv']),
     killTimer() {
       clearInterval(timerId)
     }
@@ -96,14 +96,14 @@ export default {
       })
     )
 
-    this.set_model(this.survey)
+    this.m3sm(this.survey)
 
     this.survey.onValueChanged.add((sender, options) => {
       let name = options.question.page.name
       let jsonIndex = this.jsonIndex
 
-      this.set_state(jsonIndex)
-      this.set_progress({
+      this.m3ss(jsonIndex)
+      this.m3sp({
         jsonIndex,
         name
       })
@@ -112,7 +112,7 @@ export default {
     })
 
     this.survey.onCurrentPageChanged.add(sender => {
-      this.set_visible({
+      this.m4sv({
         jsonIndex: this.jsonIndex,
         title: sender.currentPage.title
       })
@@ -121,7 +121,7 @@ export default {
     this.survey.onValidatedErrorsOnCurrentPage.add((sender, options) => {
       let jsonIndex = this.jsonIndex
 
-      this.set_validate({
+      this.m3sv({
         jsonIndex,
         options
       })
@@ -132,13 +132,13 @@ export default {
       let visible = options.visible
       let title = options.page.title
       let name = options.page.name
-      this.set_visible({
+      this.m4sv({
         jsonIndex,
         title,
         type: 'onPageVisibleChanged',
         visible
       })
-      this.set_progress({
+      this.m3sp({
         jsonIndex,
         name,
         visible
@@ -146,7 +146,7 @@ export default {
     })
 
     this.survey.onPartialSend.add(() => {
-      this.save_server()
+      this.m3ssr()
     })
 
     this.survey.onCompleting.add((sender, options) => {
@@ -163,7 +163,7 @@ export default {
         }
 
         if (!allowComplete) {
-          this.set_popup({
+          this.m2sp({
             show: true,
             text: '您有未答完的题 , 请答完后再提交'
           })
@@ -173,7 +173,7 @@ export default {
           )
           if (validate) {
             allowComplete = false
-            this.set_popup({
+            this.m2sp({
               show: true,
               text: '答题有误 , 请检查答案后提交'
             })
@@ -185,12 +185,12 @@ export default {
     })
 
     this.survey.onComplete.add(() => {
-      this.set_visible({
+      this.m4sv({
         jsonIndex: this.jsonIndex + 1
       })
 
       this.killTimer()
-      this.set_state(this.jsonIndex)
+      this.m3ss(this.jsonIndex)
 
       if (this.isLastJson) {
         this.put(this.$router)
@@ -210,12 +210,12 @@ export default {
           this.text1 = `${percent}%`
         })
       } else {
-        this.save_server()
+        this.m3ssr()
         this.$router.push({
           name: 'home'
         })
         if (!this.showAssess) {
-          this.set_popup({
+          this.m2sp({
             show: true,
             text: '请继续填写'
           })
@@ -223,13 +223,13 @@ export default {
       }
     })
 
-    this.get_state({
+    this.m3gs({
       jsonIndex: this.jsonIndex,
       pageIndex: this.pageIndex
     })
 
     timerId = window.setInterval(() => {
-      this.save_server()
+      this.m3ssr()
     }, polling)
   },
   beforeDestroy() {

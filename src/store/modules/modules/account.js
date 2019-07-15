@@ -9,27 +9,27 @@ export default {
     userinfo: null
   },
   mutations: {
-    set_snsapi_userinfo (state, payload) {
+    m1ssu (state, payload) {
       state.snsapi_userinfo = payload
       window.localStorage.setItem(account__snsapi_userinfo, JSON.stringify(payload))
     },
-    set_user_info (state, payload) {
+    m1sui (state, payload) {
       state.userinfo = payload
       window.localStorage.setItem(account__userinfo, JSON.stringify(payload))
     },
-    get_snsapi_userinfo (state) {
+    m1gsu (state) {
       const snsapi_userinfo = window.localStorage.getItem(account__snsapi_userinfo) || ''
       state.snsapi_userinfo = snsapi_userinfo ? JSON.parse(snsapi_userinfo) : {}
     },
-    get_userinfo (state) {
+    m1gu (state) {
       const userinfo = window.localStorage.getItem(account__userinfo) || ''
       state.userinfo = userinfo ? JSON.parse(userinfo) : {}
     }
   },
   actions: {
     async load ({ commit, state }, payload) {
-      commit('get_snsapi_userinfo')
-      commit('get_userinfo')
+      commit('m1gsu')
+      commit('m1gu')
 
       if ((state.userinfo && state.userinfo['openid']) || !payload) return
 
@@ -47,8 +47,8 @@ export default {
         nickname: user_info.nickname ? user_info.nickname.replace(EmojiRegExp, '').trim() : ''
       })
 
-      commit('set_snsapi_userinfo', snsapi_userinfo)
-      commit('set_user_info', {
+      commit('m1ssu', snsapi_userinfo)
+      commit('m1sui', {
         idwechat: cdc_wechat.msg,
         ...user_info
       })

@@ -10,10 +10,10 @@ export default {
     validate: {}
   },
   mutations: {
-    set_model (state, payload) {
+    m3sm (state, payload) {
       state.model = payload
     },
-    set_progress (state, payload) {
+    m3sp (state, payload) {
       let { jsonIndex, name, visible } = payload
 
       let data = state.model.data
@@ -31,30 +31,30 @@ export default {
 
       window.localStorage.setItem(answer__progress, JSON.stringify(state.progress))
     },
-    get_progress (state) {
+    m3gp (state) {
       let item = window.localStorage.getItem(answer__progress) || ''
       state.progress = (item && JSON.parse(item)) || {}
     },
-    set_validate (state, payload) {
+    m3sv (state, payload) {
       let { jsonIndex, options } = payload
       state.validate[jsonIndex] = options
 
       window.localStorage.setItem(answer__validate, JSON.stringify(state.validate))
     },
-    get_validate (state) {
+    m3gv (state) {
       let item = window.localStorage.getItem(answer__validate) || ''
       state.validate = (item && JSON.parse(item)) || {}
     }
   },
   actions: {
-    get_state ({ state }, { jsonIndex, pageIndex }) {
+    m3gs ({ state }, { jsonIndex, pageIndex }) {
       let item = window.localStorage.getItem(answer__surveyjs_loadstate) || ''
       let storage = (item && JSON.parse(item)[jsonIndex]) || {}
 
       if (storage.data) state.model.data = storage.data
       state.model.currentPageNo = pageIndex - 1
     },
-    set_state ({ state }, jsonIndex) {
+    m3ss ({ state }, jsonIndex) {
       let item = window.localStorage.getItem(answer__surveyjs_loadstate) || ''
       let storage = (item && JSON.parse(item)) || {}
 
@@ -65,7 +65,7 @@ export default {
 
       window.localStorage.setItem(answer__surveyjs_loadstate, JSON.stringify(storage))
     },
-    async save_server ({ rootState }) {
+    async m3ssr ({ rootState }) {
       let item = window.localStorage.getItem(answer__surveyjs_loadstate) || ''
       let storage = (item && JSON.parse(item)) || {}
 
@@ -77,8 +77,8 @@ export default {
       })
     },
     load ({ commit }) {
-      commit('get_progress')
-      commit('get_validate')
+      commit('m3gp')
+      commit('m3gv')
     }
   }
 }

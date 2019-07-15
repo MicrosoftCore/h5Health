@@ -10,7 +10,7 @@ export default {
     }
   },
   mutations: {
-    set_popup (state, payload) {
+    m2sp (state, payload) {
       state.showPopup = payload
       setTimeout(() => {
         state.showPopup.show = false

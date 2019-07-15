@@ -14,7 +14,7 @@
         link="/assess"
         :selected="$route.path == '/assess'"
         :show-dot="showAssessDot"
-        @on-item-click="set_assess_dot(false)"
+        @on-item-click="m4sad(false)"
       >
         <span slot="icon" class="iconfont tabbar-pinggu"></span>
         <span slot="icon-active" class="iconfont tabbar-pinggu"></span>
@@ -97,7 +97,7 @@ export default {
   },
   methods: {
     ...mapActions('action', ['reset', 'clear']),
-    ...mapMutations('question', ['set_assess_dot'])
+    ...mapMutations('question', ['m4sad'])
   }
 }
 </script>
