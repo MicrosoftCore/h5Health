@@ -87,9 +87,9 @@ export default {
     UserInfo
   },
   computed: {
-    ...mapState('account', ['userinfo']),
-    ...mapState('answer', ['progress', 'validate']),
-    ...mapState('question', ['questions', 'showAssess', 'visible']),
+    ...mapState('acc', ['userinfo']),
+    ...mapState('an', ['progress', 'validate']),
+    ...mapState('qu', ['questions', 'showAssess', 'visible']),
     questionsJson() {
       try {
         return this.questions.map(item => ({
@@ -102,8 +102,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions('action', ['reset']),
-    ...mapActions('question', ['get', 'post']),
+    ...mapActions('ac', ['reset']),
+    ...mapActions('qu', ['get', 'post']),
     onClick(jsonIndex, name) {
       const sexMap = {
         1: '男',

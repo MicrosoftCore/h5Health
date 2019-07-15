@@ -38,7 +38,7 @@ export default {
     UserInfo
   },
   computed: {
-    ...mapState('account', ['userinfo'])
+    ...mapState('acc', ['userinfo'])
   }
 }
 </script>

@@ -36,7 +36,7 @@ export default {
       text1: '',
       survey: new Model(),
       toastOptions: {
-        time: 3000,
+        time: 5000,
         type: 'text',
         width: '13em',
         position: 'middle',
@@ -45,8 +45,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('answer', ['progress', 'validate']),
-    ...mapState('question', ['questions', 'showAssess']),
+    ...mapState('an', ['progress', 'validate']),
+    ...mapState('qu', ['questions', 'showAssess']),
     jsonIndex() {
       return this.$route.params.jsonIndex
     },
@@ -75,11 +75,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions('answer', ['m3gs', 'm3ss', 'm3ssr']),
-    ...mapActions('question', ['get', 'put']),
-    ...mapMutations('action', ['m2sp']),
-    ...mapMutations('answer', ['m3sm', 'm3sp', 'm3sv']),
-    ...mapMutations('question', ['m4sv']),
+    ...mapActions('an', ['m3gs', 'm3ss', 'm3ssr']),
+    ...mapActions('qu', ['get', 'put']),
+    ...mapMutations('ac', ['m2sp']),
+    ...mapMutations('an', ['m3sm', 'm3sp', 'm3sv']),
+    ...mapMutations('qu', ['m4sv']),
     killTimer() {
       clearInterval(timerId)
     }
@@ -202,7 +202,7 @@ export default {
             if (i < 100) {
               tick(i, cb)
             }
-          }, 20)
+          }, 30)
         }
 
         this.show1 = true

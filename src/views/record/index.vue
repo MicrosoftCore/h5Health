@@ -52,7 +52,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('account', {
+    ...mapState('acc', {
       userinfo: state => state.userinfo
     })
   },
@@ -67,11 +67,16 @@ export default {
     }
   },
   async created() {
-    this.records = await service['cdcqtnaire.queryRecords']({
-      params: {
-        idwechat: this.userinfo.idwechat
-      }
-    })
+    try {
+      let records = await service['cdcqtnaire.queryRecords']({
+        params: {
+          idwechat: this.userinfo.idwechat
+        }
+      })
+      this.records = records.reverse()
+    } catch (error) {
+      this.records = []
+    }
     this.requested = true
   }
 }

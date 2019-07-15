@@ -19,7 +19,7 @@
 import { mapState } from 'vuex'
 export default {
   computed: {
-    ...mapState('account', ['userinfo']),
+    ...mapState('acc', ['userinfo']),
     headimgurl() {
       return this.userinfo.headimgurl
         ? this.userinfo.headimgurl

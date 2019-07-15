@@ -85,7 +85,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('question', ['showAssessDot']),
+    ...mapState('qu', ['showAssessDot']),
     headerOptions() {
       return {
         title: this.$route.meta.title,
@@ -96,8 +96,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions('action', ['reset', 'clear']),
-    ...mapMutations('question', ['m4sad'])
+    ...mapActions('ac', ['reset', 'clear']),
+    ...mapMutations('qu', ['m4sad'])
   }
 }
 </script>

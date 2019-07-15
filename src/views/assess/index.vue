@@ -119,7 +119,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('question', ['idqtnaireFinished', 'showAssess']),
+    ...mapState('qu', ['idqtnaireFinished', 'showAssess']),
     id() {
       let { idqtnaire = '' } = this.$route.query
       let idqtnaireFinished = this.idqtnaireFinished

@@ -160,7 +160,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('account', ['userinfo']),
+    ...mapState('acc', ['userinfo']),
     idsubmission() {
       return this.$route.query.idsubmission
     },

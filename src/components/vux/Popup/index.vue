@@ -17,7 +17,7 @@ export default {
     Popup
   },
   computed: {
-    ...mapState('action', ['showPopup'])
+    ...mapState('ac', ['showPopup'])
   }
 }
 </script>

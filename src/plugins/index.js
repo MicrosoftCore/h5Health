@@ -13,9 +13,9 @@ export default {
     Vue.use(ConfirmPlugin)
     Vue.use(ToastPlugin)
 
-    store.dispatch('account/load')
-    store.dispatch('answer/load')
-    store.dispatch('question/load')
+    store.dispatch('acc/load')
+    store.dispatch('an/load')
+    store.dispatch('qu/load')
 
     if (process.env.NODE_ENV === 'production') {
       Vue.use(OAuth2, {
@@ -24,7 +24,7 @@ export default {
         responseType: 'code',
         scope: 'snsapi_userinfo',
         getCodeCallback (code, next) {
-          store.dispatch('account/load', {
+          store.dispatch('acc/load', {
             params: {
               code
             }
@@ -33,8 +33,8 @@ export default {
           next({ name: 'home' })
 
           // try {
-          //   next(store.state.account.snsapi_userinfo.access_token, { name: 'home' })
-          //   console.log('access_token>>>>>>', store.state.account.snsapi_userinfo.access_token)
+          //   next(store.state.acc.snsapi_userinfo.access_token, { name: 'home' })
+          //   console.log('access_token>>>>>>', store.state.acc.snsapi_userinfo.access_token)
           // } catch (error) {
           //   console.log('get access_token failed')
           //   next({ name: 'home' })
@@ -42,7 +42,7 @@ export default {
         }
       })
     } else {
-      store.dispatch('account/load', {
+      store.dispatch('acc/load', {
         params: {
           code: '021VFuHa2itP5M0t3SKa2xjIHa2VFuHq'
         }
