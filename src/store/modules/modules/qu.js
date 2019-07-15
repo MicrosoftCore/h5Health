@@ -89,7 +89,7 @@ export default {
       commit('m4si', msg)
     },
     async put ({ commit, dispatch, state }, payload) {
-      await dispatch('answer/m3ssr', null, {
+      await dispatch('an/m3ssr', null, {
         root: true
       })
       await service['cdcqtnaire.update']({

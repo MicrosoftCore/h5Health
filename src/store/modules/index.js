@@ -1,11 +1,11 @@
-import account from './modules/account'
-import action from './modules/action'
-import answer from './modules/answer'
-import question from './modules/question'
+import acc from './modules/acc'
+import ac from './modules/ac'
+import an from './modules/an'
+import qu from './modules/qu'
 
 export default {
-  account,
-  action,
-  answer,
-  question
+  acc,
+  ac,
+  an,
+  qu
 }

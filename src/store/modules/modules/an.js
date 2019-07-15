@@ -72,7 +72,7 @@ export default {
       let jsonobj = Object.values(storage).reduce((iter, item) => Object.assign(iter, item.data), {})
 
       await service['cdcanswer.add']({
-        idqtnaire: rootState.question.idqtnaire,
+        idqtnaire: rootState.qu.idqtnaire,
         jsonobj: JSON.stringify(jsonobj)
       })
     },

@@ -19,10 +19,10 @@ export default {
   },
   actions: {
     reload ({ dispatch }) {
-      dispatch('answer/load', null, {
+      dispatch('an/load', null, {
         root: true
       })
-      dispatch('question/load', null, {
+      dispatch('qu/load', null, {
         root: true
       })
     },
